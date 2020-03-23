@@ -43,7 +43,7 @@ public class NIM
 }
 ```
 
-Contoh lain, misalkan terdapat obyek `Produk` yang memiliki atribut `nama` dan `harga`. Disini `produk` tidak memiliki natural key, namun `produk` perlu kita buat sebagai `entity`. Karena bila kebetulan ada produk lain yang memiliki `harga` dan `nama` yang sama, kedua produk tersebut tetap harus dapat dibedakan. Bisanya developer membuat [surrogate key](https://en.wikipedia.org/wiki/Surrogate_key) menggunakan auto-increment integer atau UUID/GUID.
+Contoh lain, misalkan terdapat obyek `Produk` yang memiliki atribut `nama` dan `harga`. Disini `produk` tidak memiliki natural key, namun `produk` perlu kita buat sebagai `entity`. Karena bila kebetulan ada produk lain yang memiliki `harga` dan `nama` yang sama, kedua produk tersebut tetap harus dapat dibedakan. Biasanya developer membuat [surrogate key](https://en.wikipedia.org/wiki/Surrogate_key) menggunakan auto-increment integer atau UUID/GUID.
 
 `Harga` bisa dibiarkan primitif menggunakan float, atau bila memiliki behavior, bisa dibuat class `value-object`-nya. Di buku Scott Millett, `harga` dibuat dari class `money` yang memiliki `value` dan `currency`. `Harga` bisa juga ditambah validasi tidak boleh minus.
 

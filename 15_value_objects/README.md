@@ -4,13 +4,13 @@ Tulisan ini adalah rangkuman dari bab 15 buku Scott Millett, serta ditambahkan d
 
 Dua hal paling mendasar dari building blocks DDD adalah `value object` dan `entity`. `Value object` dan `entity` memiliki karakteristik detail masing-masing. Namun, agar Anda lebih mudah membayangkan, karakteristik utama dari `value object` adalah tidak memiliki ID, sedangkan `entity` memiliki ID.
 
-Contoh simpelnya seperti ini: terdapat obyek `Mahasiswa` memiliki `NIM`, `nama`, dan `tanggal lahir`.
+Contoh simpelnya seperti ini: terdapat obyek `Mahasiswa` yang memiliki `NIM`, `nama`, dan `tanggal lahir`.
 
 `Mahasiswa` adalah sebuah `entity`. Object ini dapat  kita kenali dari IDnya. `NIM` bisa dipertimbangkan sebagai primary key karena merupakan [natural key](https://en.wikipedia.org/wiki/Natural_key) dari obyek `Mahasiswa`.
 
 Sedangkan `NIM`, `nama`, dan `tanggal lahir`, adalah state dari entity `Mahasiswa`. Ketiga atribut ini bisa dipertimbangkan dibuat class `value object`-nya atau dibiarkan primitif menggunakan tipe data/class bawaan bahasa pemrograman seperti string dan date. Pertimbangan paling mudahnya adalah cek apakah akan menghadirkan smell [Primitive Obsession](https://sourcemaking.com/refactoring/smells/primitive-obsession) atau tidak.
 
-Misalkan `NIM` dipertimbangkan harus dibuat class-nya sendiri karena ternyata `NIM` punya banyak behavior (salah satu ciri khas value object, dibahas di bawah). Salah satu contoh behavior-nya: NIM di BINUS harus 10 digit.
+Misalkan `NIM` dipertimbangkan harus dibuat class-nya sendiri karena ternyata `NIM` punya banyak behavior (value object harus behavior-rich, dibahas di bawah). Misalkan salah satu contoh behavior-nya: NIM di BINUS harus 10 digit.
 
 Contoh class [Mahasiswa dan NIM](sample/Mahasiswa.cs):
 
@@ -43,9 +43,13 @@ public class NIM
 }
 ```
 
-Contoh lain, misalkan terdapat obyek `Produk` yang memiliki atribut `nama` dan `harga`. Disini `produk` tidak memiliki natural key, namun `produk` perlu kita buat sebagai `entity`. Karena bila kebetulan ada produk lain yang memiliki `harga` dan `nama` yang sama, kedua produk tersebut tetap harus dapat dibedakan. Biasanya developer membuat [surrogate key](https://en.wikipedia.org/wiki/Surrogate_key) menggunakan auto-increment integer atau UUID/GUID.
+Contoh lain, terdapat obyek `Produk` yang memiliki atribut `nama` dan `harga`. 
 
-`Harga` bisa dibiarkan primitif menggunakan float, atau bila memiliki behavior, bisa dibuat class `value-object`-nya. Di buku Scott Millett, `harga` dibuat dari class `money` yang memiliki `value` dan `currency`. `Harga` bisa juga ditambah validasi tidak boleh minus.
+Disini `produk` tidak memiliki natural key, namun `produk` perlu kita buat sebagai `entity`. Karena bila kebetulan ada produk lain yang memiliki `harga` dan `nama` yang sama, kedua produk tersebut tetap harus dapat dibedakan. 
+
+Bila entity tidak punya natural key, biasanya developer akan membuat [surrogate key](https://en.wikipedia.org/wiki/Surrogate_key) dengan menggunakan auto-increment integer atau UUID/GUID.
+
+`Harga` bisa dibiarkan primitif menggunakan float, atau bila `harga` memiliki behavior, kita bisa membuat class `value-object`-nya. Di buku Scott Millett, dicontohkan `harga` dibuat dari class `money` yang memiliki atribut `value` dan `currency`.
 
 Class [Product](sample/Product.cs):
 ```csharp
@@ -90,7 +94,7 @@ Sebagai contoh, validasi class **Money** dibuat simpel. Hanya cek harus 3 karakt
 
 ### Identity-less
 
-Value object tidak boleh punya ID. Agar memiliki makna dan dapat digunakan dalam sistem, biasanya value object akan menempel ke entity tertentu. Value object berperan sebagai state dari entity tersebut.
+Value object tidak boleh punya ID. Biasanya value object akan menempel ke entity tertentu agar memiliki makna dan dapat digunakan dalam sistem. Value object berperan sebagai state dari entity tersebut.
 
 Mungkin akan muncul pertanyaan, berarti bila value object disimpan di dalam table ERD di database, dan kebetulan value object disimpan terpisah table dengan entity-nya, value object tidak boleh memiliki ID/primary key di dalam table?
 
@@ -222,6 +226,8 @@ Perhatikan pada contoh code diatas, kita melakukan throw exception bila currency
 
 Value object tidak boleh dibiarkan dalam invalid state. Setiap kali di-create, value object harus selalu dalam keadaan valid. Keadaan valid yang dimaksud tentunya tergantung business requirement dari domain expert.
 
+Self-validating dapat dilakukan di constructor ketika object pertamakali berusaha di-create. Bila ada data yang tidak valid, Anda bisa melempar Exception.
+
 ### Testable
 
 Value object relatif mudah dibuat unit test-nya. Sebagai software engineer yang bertanggung jawab, Anda harus memaksimalkan test coverage di dalam codebase Anda.
@@ -294,7 +300,7 @@ Bila Anda menyimpan dalam tabel relasional, ada dua pertimbangan bagaimana cara 
 
 1. Flat Denormalization
 
-Data disimpan dalam satu tabel atribut-atribut menjadi kolom-kolomnya. Bahkan jika memungkinkan, data disiapkan format khusus agar dapat disimpan cukup dalam satu kolom sehingga bisa dibaca lagi dengan mudah.
+Data disimpan dalam satu tabel. Atribut-atribut dari class akan menjadi kolom-kolomnya. Bahkan jika memungkinkan, data disiapkan format khusus agar dapat disimpan cukup dalam satu kolom sehingga bisa dibaca lagi dengan mudah.
 
 Contoh yang paling klasik adalah `DateTime`. Tentunya data `DateTime` tidak kita pisah-pisah kolomnya menjadi kolom tanggal, bulan, tahun, dan seterusnya.
 

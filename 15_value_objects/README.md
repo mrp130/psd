@@ -1,4 +1,4 @@
-# alue Objects
+# Value Objects
 
 Tulisan ini adalah rangkuman dari bab 15 buku Scott Millett, serta ditambahkan dengan beberapa informasi lainnya. Harap mahasiswa membaca lagi bab tersebut setelah membaca rangkuman ini karena banyak contoh code lain di dalam buku yang dapat membantu lebih memahami karakteristik value object.
 

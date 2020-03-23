@@ -6,11 +6,11 @@ Building blocks yang dibuat Eric Evans tidak sepenuhnya baru. Anda bisa melihat 
 
 Eric Evans dan Scott Millett menekankan bahwa pendekatan taktikal kita untuk merancang software akan terus berkembang. Akan ada building block baru. Definisi dari building block yang akan kita bahas juga bisa saja berubah. Yang paling penting adalah kita menjaga Ubiquitous Language agar building block dapat dipahami dengan arti yang sama untuk semua software engineer dalam tim.
 
-![Building blocks](img/building_blocks.png)
+![Building blocks](img/building_blocks.PNG)
 
 Building blocks yang akan kita bahas dari buku Scott Millett adalah:
 
-- Value Objects
+- [Value Objects](../15_value_objects)
 - Entities
 - Domain Services
 - Domain Events

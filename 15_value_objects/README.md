@@ -294,7 +294,7 @@ Anda bisa memilih teknologi berbasis NoSQL seperti MongoDB untuk menyimpan data 
 
 ### SQL
 
-Anda juga bisa memakai tabel relasional yang selama ini pernah pakai untuk menyimpan data value object.
+Anda juga bisa memakai tabel relasional yang selama ini pernah Anda pakai untuk di semester sebelumnya.
 
 Bila Anda menyimpan dalam tabel relasional, ada dua pertimbangan bagaimana cara penyimpanannya:
 

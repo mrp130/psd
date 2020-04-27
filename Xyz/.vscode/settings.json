@@ -1,0 +1,4 @@
+{
+  "dotnet-test-explorer.testProjectPath": "**/*Test.csproj",
+  "dotnet-test-explorer.enableTelemetry": false
+}

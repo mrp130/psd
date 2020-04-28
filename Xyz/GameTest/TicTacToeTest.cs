@@ -3,6 +3,8 @@ using Xunit;
 
 using System.Collections.Generic;
 
+using Xyz.Game.ExpGainer;
+
 namespace Xyz.Game.Test
 {
   public class TicTacToeTest
@@ -12,11 +14,14 @@ namespace Xyz.Game.Test
     {
       Exception result = null;
 
+      IExpGainer win = new TicTacToeWin();
+      IExpGainer lose = new TicTacToeLose();
+
       List<User> users = new List<User>();
       users.Add(User.NewUser("Amir"));
       try
       {
-        XyzGame game = new TicTacToe(users);
+        XyzGame game = new TicTacToe(win, lose, users);
       }
       catch (Exception e)
       {
@@ -31,13 +36,16 @@ namespace Xyz.Game.Test
     {
       List<User> users = new List<User>();
 
+      IExpGainer win = new TicTacToeWin();
+      IExpGainer lose = new TicTacToeLose();
+
       User amir = User.NewUser("Amir");
       User budi = User.NewUser("Budi");
 
       users.Add(amir);
       users.Add(budi);
 
-      XyzGame game = new TicTacToe(users);
+      XyzGame game = new TicTacToe(win, lose, users);
 
       Assert.Equal("tic-tac-toe", game.Name());
 
@@ -62,11 +70,14 @@ namespace Xyz.Game.Test
 
       User amir = User.NewUser("Amir");
       User budi = User.NewUser("Budi");
+      
+      IExpGainer win = new TicTacToeWin();
+      IExpGainer lose = new TicTacToeLose();
 
       users.Add(amir);
       users.Add(budi);
 
-      XyzGame game = new TicTacToe(users);
+      XyzGame game = new TicTacToe(win, lose, users);
 
       Assert.Equal("tic-tac-toe", game.Name());
 
@@ -88,13 +99,16 @@ namespace Xyz.Game.Test
     {
       List<User> users = new List<User>();
 
+      IExpGainer win = new TicTacToeWin();
+      IExpGainer lose = new TicTacToeLose();
+
       User amir = User.NewUser("Amir");
       User budi = User.NewUser("Budi");
 
       users.Add(amir);
       users.Add(budi);
 
-      XyzGame game = new TicTacToe(users);
+      XyzGame game = new TicTacToe(win, lose, users);
 
       Assert.Equal("tic-tac-toe", game.Name());
 
@@ -119,10 +133,13 @@ namespace Xyz.Game.Test
       User amir = User.NewUser("Amir");
       User budi = User.NewUser("Budi");
 
+      IExpGainer win = new TicTacToeWin();
+      IExpGainer lose = new TicTacToeLose();
+
       users.Add(amir);
       users.Add(budi);
 
-      XyzGame game = new TicTacToe(users);
+      XyzGame game = new TicTacToe(win, lose, users);
 
       Assert.Equal("tic-tac-toe", game.Name());
 
@@ -147,10 +164,13 @@ namespace Xyz.Game.Test
       User amir = User.NewUser("Amir");
       User budi = User.NewUser("Budi");
 
+      IExpGainer win = new TicTacToeWin();
+      IExpGainer lose = new TicTacToeLose();
+
       users.Add(amir);
       users.Add(budi);
 
-      XyzGame game = new TicTacToe(users);
+      XyzGame game = new TicTacToe(win, lose, users);
 
       Assert.Equal("tic-tac-toe", game.Name());
 
@@ -164,6 +184,40 @@ namespace Xyz.Game.Test
       Assert.True(isEnded);
 
       Assert.Equal(5, amir.Exp);
+      Assert.Equal(2, budi.Exp);
+    }
+
+    [Fact]
+    public void TestMultiplier()
+    {
+      List<User> users = new List<User>();
+
+      User amir = User.NewUser("Amir");
+      User budi = User.NewUser("Budi");
+
+      IExpGainer win = new TicTacToeWin();
+      IExpGainer lose = new TicTacToeLose();
+
+      win = new Multiplier(win, 2);
+      win = new Multiplier(win, 3);
+
+      users.Add(amir);
+      users.Add(budi);
+
+      XyzGame game = new TicTacToe(win, lose, users);
+
+      Assert.Equal("tic-tac-toe", game.Name());
+
+      game.Move(new TicTacToeMove(game, amir, 2));
+      game.Move(new TicTacToeMove(game, budi, 3));
+
+      game.Move(new TicTacToeMove(game, amir, 4));
+      game.Move(new TicTacToeMove(game, budi, 0));
+
+      bool isEnded = game.Move(new TicTacToeMove(game, amir, 6));
+      Assert.True(isEnded);
+
+      Assert.Equal(30, amir.Exp);
       Assert.Equal(2, budi.Exp);
     }
   }

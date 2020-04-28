@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 
+using Xyz.Game.ExpGainer;
+
 namespace Xyz.Game
 {
   public class TicTacToeMove : Move
@@ -100,10 +102,13 @@ namespace Xyz.Game
 
     protected override void GivePlayersExp()
     {
-      _currentPlayer.AddExp(5);
+      IExpGainer win = ServiceLocator.Instance().Get("tictactoe_win");
+      IExpGainer lose = ServiceLocator.Instance().Get("tictactoe_lose");
+
+      _currentPlayer.AddExp(win.Gain());
 
       _currentPlayer = _currentPlayer.Equals(_p1) ? _p2 : _p1;
-      _currentPlayer.AddExp(2);
+      _currentPlayer.AddExp(lose.Gain());
     }
 
     private bool IsWin()

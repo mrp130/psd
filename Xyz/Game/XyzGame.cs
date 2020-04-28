@@ -1,10 +1,31 @@
 using System;
 using System.Collections.Generic;
 
+using Xyz.Game.ExpGainer;
+
 namespace Xyz.Game
 {
   public abstract class XyzGame
   {
+    protected User _winner;
+    protected User _loser;
+
+    public User Winner
+    {
+      get
+      {
+        return _winner;
+      }
+    }
+
+    public User Loser
+    {
+      get
+      {
+        return _loser;
+      }
+    }
+
     protected bool _gameEnded;
     protected List<User> _players;
 
@@ -15,7 +36,7 @@ namespace Xyz.Game
       this.Init();
     }
 
-    public bool Move(Move move)
+    public bool Move(IExpGain gainer, Move move)
     {
       if (_gameEnded)
       {
@@ -27,7 +48,8 @@ namespace Xyz.Game
 
       _gameEnded = true;
 
-      this.GivePlayersExp();
+      this.SetWinnerLoser();
+      gainer.Gain(this);
 
       return isEnded;
     }
@@ -35,7 +57,7 @@ namespace Xyz.Game
     protected abstract void Init();
 
     protected abstract bool DoMove(Move move);
-    protected abstract void GivePlayersExp();
+    protected abstract void SetWinnerLoser();
 
     public abstract string Name();
   }

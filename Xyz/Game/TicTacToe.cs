@@ -98,12 +98,12 @@ namespace Xyz.Game
     }
 
 
-    protected override void GivePlayersExp()
+    protected override void SetWinnerLoser()
     {
-      _currentPlayer.AddExp(5);
+      _winner = _currentPlayer;
 
       _currentPlayer = _currentPlayer.Equals(_p1) ? _p2 : _p1;
-      _currentPlayer.AddExp(2);
+      _loser = _currentPlayer;
     }
 
     private bool IsWin()
@@ -157,7 +157,7 @@ namespace Xyz.Game
       if (count == _size) return true;
 
       count = 0;
-      for (int i = 0, j = _size-1; i < _size; i++, j--)
+      for (int i = 0, j = _size - 1; i < _size; i++, j--)
       {
         int idx = i * _size + j;
         if (_board[idx] != _currentSymbol) break;

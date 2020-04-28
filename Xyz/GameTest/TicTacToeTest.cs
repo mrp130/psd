@@ -3,10 +3,18 @@ using Xunit;
 
 using System.Collections.Generic;
 
+using Xyz.Game.ExpGainer;
+
 namespace Xyz.Game.Test
 {
   public class TicTacToeTest
   {
+    private IExpGain gainer;
+
+    public TicTacToeTest() {
+      gainer = new TicTacToeGain(new TicTacToeWin(), new TicTacToeLose());
+    }
+
     [Fact]
     public void InvalidPlayers()
     {
@@ -41,17 +49,17 @@ namespace Xyz.Game.Test
 
       Assert.Equal("tic-tac-toe", game.Name());
 
-      game.Move(new TicTacToeMove(game, amir, 3));
+      game.Move(gainer, new TicTacToeMove(game, amir, 3));
 
       Exception ex = null;
 
-      ex = Assert.Throws<Exception>(() => game.Move(null));
+      ex = Assert.Throws<Exception>(() => game.Move(gainer, null));
       Assert.Equal("invalid move: not a tic tac toe move", ex.Message);
 
-      ex = Assert.Throws<Exception>(() => game.Move(new TicTacToeMove(game, amir, 3)));
+      ex = Assert.Throws<Exception>(() => game.Move(gainer, new TicTacToeMove(game, amir, 3)));
       Assert.Equal("invalid move: not current player", ex.Message);
 
-      ex = Assert.Throws<Exception>(() => game.Move(new TicTacToeMove(game, budi, 3)));
+      ex = Assert.Throws<Exception>(() => game.Move(gainer, new TicTacToeMove(game, budi, 3)));
       Assert.Equal("invalid move: already filled", ex.Message);
     }
 
@@ -70,13 +78,13 @@ namespace Xyz.Game.Test
 
       Assert.Equal("tic-tac-toe", game.Name());
 
-      game.Move(new TicTacToeMove(game, amir, 4));
-      game.Move(new TicTacToeMove(game, budi, 3));
+      game.Move(gainer, new TicTacToeMove(game, amir, 4));
+      game.Move(gainer, new TicTacToeMove(game, budi, 3));
 
-      game.Move(new TicTacToeMove(game, amir, 7));
-      game.Move(new TicTacToeMove(game, budi, 0));
+      game.Move(gainer, new TicTacToeMove(game, amir, 7));
+      game.Move(gainer, new TicTacToeMove(game, budi, 0));
 
-      bool isEnded = game.Move(new TicTacToeMove(game, amir, 1));
+      bool isEnded = game.Move(gainer, new TicTacToeMove(game, amir, 1));
       Assert.True(isEnded);
 
       Assert.Equal(5, amir.Exp);
@@ -98,13 +106,13 @@ namespace Xyz.Game.Test
 
       Assert.Equal("tic-tac-toe", game.Name());
 
-      game.Move(new TicTacToeMove(game, amir, 6));
-      game.Move(new TicTacToeMove(game, budi, 3));
+      game.Move(gainer, new TicTacToeMove(game, amir, 6));
+      game.Move(gainer, new TicTacToeMove(game, budi, 3));
 
-      game.Move(new TicTacToeMove(game, amir, 7));
-      game.Move(new TicTacToeMove(game, budi, 0));
+      game.Move(gainer, new TicTacToeMove(game, amir, 7));
+      game.Move(gainer, new TicTacToeMove(game, budi, 0));
 
-      bool isEnded = game.Move(new TicTacToeMove(game, amir, 8));
+      bool isEnded = game.Move(gainer, new TicTacToeMove(game, amir, 8));
       Assert.True(isEnded);
 
       Assert.Equal(5, amir.Exp);
@@ -126,13 +134,13 @@ namespace Xyz.Game.Test
 
       Assert.Equal("tic-tac-toe", game.Name());
 
-      game.Move(new TicTacToeMove(game, amir, 0));
-      game.Move(new TicTacToeMove(game, budi, 3));
+      game.Move(gainer, new TicTacToeMove(game, amir, 0));
+      game.Move(gainer, new TicTacToeMove(game, budi, 3));
 
-      game.Move(new TicTacToeMove(game, amir, 4));
-      game.Move(new TicTacToeMove(game, budi, 1));
+      game.Move(gainer, new TicTacToeMove(game, amir, 4));
+      game.Move(gainer, new TicTacToeMove(game, budi, 1));
 
-      bool isEnded = game.Move(new TicTacToeMove(game, amir, 8));
+      bool isEnded = game.Move(gainer, new TicTacToeMove(game, amir, 8));
       Assert.True(isEnded);
 
       Assert.Equal(5, amir.Exp);
@@ -154,13 +162,13 @@ namespace Xyz.Game.Test
 
       Assert.Equal("tic-tac-toe", game.Name());
 
-      game.Move(new TicTacToeMove(game, amir, 2));
-      game.Move(new TicTacToeMove(game, budi, 3));
+      game.Move(gainer, new TicTacToeMove(game, amir, 2));
+      game.Move(gainer, new TicTacToeMove(game, budi, 3));
 
-      game.Move(new TicTacToeMove(game, amir, 4));
-      game.Move(new TicTacToeMove(game, budi, 0));
+      game.Move(gainer, new TicTacToeMove(game, amir, 4));
+      game.Move(gainer, new TicTacToeMove(game, budi, 0));
 
-      bool isEnded = game.Move(new TicTacToeMove(game, amir, 6));
+      bool isEnded = game.Move(gainer, new TicTacToeMove(game, amir, 6));
       Assert.True(isEnded);
 
       Assert.Equal(5, amir.Exp);

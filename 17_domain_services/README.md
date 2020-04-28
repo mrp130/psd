@@ -1,6 +1,6 @@
 # Domain Services
 
-Video ini adalah rangkuman dari bab 17 buku Scott Millett, serta ditambahkan dengan beberapa informasi lainnya. Harap mahasiswa membaca lagi bab tersebut setelah membaca rangkuman ini karena banyak contoh code lain di dalam buku yang dapat membantu lebih memahami Domain Service.
+Video ini adalah rangkuman dari bab 17 buku Scott Millett, serta ditambahkan dengan beberapa informasi lainnya. Harap mahasiswa membaca lagi bab tersebut setelah menonton video ini agar lebih memahami Domain Service.
 
 Teori: [Link Video](https://www.youtube.com/watch?v=tBhYkUMRwMc&list=PLG_Cu5FmqSk1Sc6XxZ19E4hk_u0mswmwj&index=1)
 

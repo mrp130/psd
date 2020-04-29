@@ -1,4 +1,4 @@
-# psd
+# COMP6114 - Pattern Software Design
 
 Repository ini dibuat untuk keperluan materi online class COMP6114 - Pattern Software Design, kelas LA01 dan LB01. Matakuliah ini belajar mengenai Domain-Driven Design.
 

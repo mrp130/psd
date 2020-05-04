@@ -1,15 +1,23 @@
 using System;
 using System.Collections.Generic;
 
+using Xyz.Game.ExpGainer;
+
 namespace Xyz.Game
 {
   public abstract class XyzGame
   {
+    protected IExpGainer _winExpGainer;
+    protected IExpGainer _loseExpGainer;
+
     protected bool _gameEnded;
     protected List<User> _players;
 
-    public XyzGame(List<User> users)
+    public XyzGame(IExpGainer win, IExpGainer lose, List<User> users)
     {
+      _winExpGainer = win;
+      _loseExpGainer = lose;
+
       _gameEnded = false;
       this._players = users;
       this.Init();

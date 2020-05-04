@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 
+using Xyz.Game.ExpGainer;
+
 namespace Xyz.Game
 {
   public class TicTacToeMove : Move
@@ -35,7 +37,7 @@ namespace Xyz.Game
 
   public class TicTacToe : XyzGame
   {
-    public TicTacToe(List<User> users) : base(users) { }
+    public TicTacToe(IExpGainer win, IExpGainer lose, List<User> users) : base(win, lose, users) { }
 
     private User _p1;
     private User _p2;
@@ -97,13 +99,12 @@ namespace Xyz.Game
       return false;
     }
 
-
     protected override void GivePlayersExp()
     {
-      _currentPlayer.AddExp(5);
+      _currentPlayer.AddExp(_winExpGainer.Gain());
 
       _currentPlayer = _currentPlayer.Equals(_p1) ? _p2 : _p1;
-      _currentPlayer.AddExp(2);
+      _currentPlayer.AddExp(_loseExpGainer.Gain());
     }
 
     private bool IsWin()

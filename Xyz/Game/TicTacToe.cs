@@ -70,7 +70,7 @@ namespace Xyz.Game
       _gameEnded = false;
     }
 
-    protected override bool DoMove(Move move)
+    protected override void DoMove(Move move)
     {
       TicTacToeMove m = move as TicTacToeMove;
       if (m == null)
@@ -90,20 +90,38 @@ namespace Xyz.Game
 
       _board[m.GridIndex] = _currentSymbol;
 
-      if (IsWin()) return true;
+      if (IsWin())
+      {
+        _gameEnded = true;
+
+        Broadcast(new Win(_currentPlayer));
+
+        _currentPlayer = _currentPlayer.Equals(_p1) ? _p2 : _p1;
+        Broadcast(new Lose(_currentPlayer));
+      }
+
+      if (IsDraw())
+      {
+        Broadcast(new Draw(_p1));
+        Broadcast(new Draw(_p2));
+      }
 
       _currentPlayer = _currentPlayer.Equals(_p1) ? _p2 : _p1;
       _currentSymbol = _currentSymbol == 'X' ? 'O' : 'X';
-      return false;
     }
 
-
-    protected override void GivePlayersExp()
+    private bool IsDraw()
     {
-      _currentPlayer.AddExp(5);
+      for (int i = 0; i < _size; i++)
+      {
+        for (int j = 0; j < _size; j++)
+        {
+          int idx = i * _size + j;
+          if (_board[idx] == '\0') return false;
+        }
+      }
 
-      _currentPlayer = _currentPlayer.Equals(_p1) ? _p2 : _p1;
-      _currentPlayer.AddExp(2);
+      return true;
     }
 
     private bool IsWin()
@@ -157,7 +175,7 @@ namespace Xyz.Game
       if (count == _size) return true;
 
       count = 0;
-      for (int i = 0, j = _size-1; i < _size; i++, j--)
+      for (int i = 0, j = _size - 1; i < _size; i++, j--)
       {
         int idx = i * _size + j;
         if (_board[idx] != _currentSymbol) break;

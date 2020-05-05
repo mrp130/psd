@@ -3,10 +3,33 @@ using Xunit;
 
 using System.Collections.Generic;
 
+using Xyz.Game.ExpGainer;
+
 namespace Xyz.Game.Test
 {
   public class TicTacToeTest
   {
+    User amir, budi;
+    XyzGame game;
+
+    public TicTacToeTest()
+    {
+      amir = User.NewUser("Amir");
+      budi = User.NewUser("Budi");
+
+      List<User> users = new List<User>();
+      users.Add(amir);
+      users.Add(budi);
+
+      game = new TicTacToe(users);
+
+      GameResultHandler win = new WinHandler(new TicTacToeWin());
+      GameResultHandler lose = new LoseHandler(new TicTacToeLose());
+
+      game.Attach(win);
+      game.Attach(lose);
+    }
+
     [Fact]
     public void InvalidPlayers()
     {
@@ -29,18 +52,6 @@ namespace Xyz.Game.Test
     [Fact]
     public void InvalidMove()
     {
-      List<User> users = new List<User>();
-
-      User amir = User.NewUser("Amir");
-      User budi = User.NewUser("Budi");
-
-      users.Add(amir);
-      users.Add(budi);
-
-      XyzGame game = new TicTacToe(users);
-
-      Assert.Equal("tic-tac-toe", game.Name());
-
       game.Move(new TicTacToeMove(game, amir, 3));
 
       Exception ex = null;
@@ -58,26 +69,13 @@ namespace Xyz.Game.Test
     [Fact]
     public void WinVertical()
     {
-      List<User> users = new List<User>();
-
-      User amir = User.NewUser("Amir");
-      User budi = User.NewUser("Budi");
-
-      users.Add(amir);
-      users.Add(budi);
-
-      XyzGame game = new TicTacToe(users);
-
-      Assert.Equal("tic-tac-toe", game.Name());
-
       game.Move(new TicTacToeMove(game, amir, 4));
       game.Move(new TicTacToeMove(game, budi, 3));
 
       game.Move(new TicTacToeMove(game, amir, 7));
       game.Move(new TicTacToeMove(game, budi, 0));
 
-      bool isEnded = game.Move(new TicTacToeMove(game, amir, 1));
-      Assert.True(isEnded);
+      game.Move(new TicTacToeMove(game, amir, 1));
 
       Assert.Equal(5, amir.Exp);
       Assert.Equal(2, budi.Exp);
@@ -86,26 +84,13 @@ namespace Xyz.Game.Test
     [Fact]
     public void WinHorizontal()
     {
-      List<User> users = new List<User>();
-
-      User amir = User.NewUser("Amir");
-      User budi = User.NewUser("Budi");
-
-      users.Add(amir);
-      users.Add(budi);
-
-      XyzGame game = new TicTacToe(users);
-
-      Assert.Equal("tic-tac-toe", game.Name());
-
       game.Move(new TicTacToeMove(game, amir, 6));
       game.Move(new TicTacToeMove(game, budi, 3));
 
       game.Move(new TicTacToeMove(game, amir, 7));
       game.Move(new TicTacToeMove(game, budi, 0));
 
-      bool isEnded = game.Move(new TicTacToeMove(game, amir, 8));
-      Assert.True(isEnded);
+      game.Move(new TicTacToeMove(game, amir, 8));
 
       Assert.Equal(5, amir.Exp);
       Assert.Equal(2, budi.Exp);
@@ -114,26 +99,13 @@ namespace Xyz.Game.Test
     [Fact]
     public void WinDiagonal1()
     {
-      List<User> users = new List<User>();
-
-      User amir = User.NewUser("Amir");
-      User budi = User.NewUser("Budi");
-
-      users.Add(amir);
-      users.Add(budi);
-
-      XyzGame game = new TicTacToe(users);
-
-      Assert.Equal("tic-tac-toe", game.Name());
-
       game.Move(new TicTacToeMove(game, amir, 0));
       game.Move(new TicTacToeMove(game, budi, 3));
 
       game.Move(new TicTacToeMove(game, amir, 4));
       game.Move(new TicTacToeMove(game, budi, 1));
 
-      bool isEnded = game.Move(new TicTacToeMove(game, amir, 8));
-      Assert.True(isEnded);
+      game.Move(new TicTacToeMove(game, amir, 8));
 
       Assert.Equal(5, amir.Exp);
       Assert.Equal(2, budi.Exp);
@@ -142,26 +114,13 @@ namespace Xyz.Game.Test
     [Fact]
     public void WinDiagonal2()
     {
-      List<User> users = new List<User>();
-
-      User amir = User.NewUser("Amir");
-      User budi = User.NewUser("Budi");
-
-      users.Add(amir);
-      users.Add(budi);
-
-      XyzGame game = new TicTacToe(users);
-
-      Assert.Equal("tic-tac-toe", game.Name());
-
       game.Move(new TicTacToeMove(game, amir, 2));
       game.Move(new TicTacToeMove(game, budi, 3));
 
       game.Move(new TicTacToeMove(game, amir, 4));
       game.Move(new TicTacToeMove(game, budi, 0));
 
-      bool isEnded = game.Move(new TicTacToeMove(game, amir, 6));
-      Assert.True(isEnded);
+      game.Move(new TicTacToeMove(game, amir, 6));
 
       Assert.Equal(5, amir.Exp);
       Assert.Equal(2, budi.Exp);

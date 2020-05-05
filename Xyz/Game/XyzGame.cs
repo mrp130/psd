@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Xyz.Game
 {
-  public abstract class XyzGame
+  public abstract class XyzGame : IObservable<GameResult>
   {
     protected bool _gameEnded;
     protected List<User> _players;
@@ -15,29 +15,33 @@ namespace Xyz.Game
       this.Init();
     }
 
-    public bool Move(Move move)
+    public void Move(Move move)
     {
       if (_gameEnded)
       {
         throw new Exception("game already finished");
       }
 
-      bool isEnded = DoMove(move);
-      if (!isEnded) return isEnded;
-
-      _gameEnded = true;
-
-      this.GivePlayersExp();
-
-      return isEnded;
+      DoMove(move);
     }
 
     protected abstract void Init();
-
-    protected abstract bool DoMove(Move move);
-    protected abstract void GivePlayersExp();
-
+    protected abstract void DoMove(Move move);
     public abstract string Name();
+
+    protected List<IObserver<GameResult>> _observers = new List<IObserver<GameResult>>();
+    public void Attach(IObserver<GameResult> obs)
+    {
+      _observers.Add(obs);
+    }
+
+    public void Broadcast(GameResult e)
+    {
+      foreach (var obs in _observers)
+      {
+        obs.Update(e);
+      }
+    }
   }
 
   public abstract class Move

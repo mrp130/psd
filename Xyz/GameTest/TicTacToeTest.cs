@@ -21,13 +21,7 @@ namespace Xyz.Game.Test
       users.Add(amir);
       users.Add(budi);
 
-      game = new TicTacToe(users);
-
-      GameResultHandler win = new WinHandler(new TicTacToeWin());
-      GameResultHandler lose = new LoseHandler(new TicTacToeLose());
-
-      game.Attach(win);
-      game.Attach(lose);
+      game = GameFactory.Create("tic-tac-toe", users);
     }
 
     [Fact]
@@ -39,7 +33,7 @@ namespace Xyz.Game.Test
       users.Add(User.NewUser("Amir"));
       try
       {
-        XyzGame game = new TicTacToe(users);
+        XyzGame game = GameFactory.Create("tic-tac-toe", users);
       }
       catch (Exception e)
       {
@@ -52,30 +46,30 @@ namespace Xyz.Game.Test
     [Fact]
     public void InvalidMove()
     {
-      game.Move(new TicTacToeMove(game, amir, 3));
+      game.Move(new TicTacToeMove(amir, 3));
 
       Exception ex = null;
 
       ex = Assert.Throws<Exception>(() => game.Move(null));
       Assert.Equal("invalid move: not a tic tac toe move", ex.Message);
 
-      ex = Assert.Throws<Exception>(() => game.Move(new TicTacToeMove(game, amir, 3)));
+      ex = Assert.Throws<Exception>(() => game.Move(new TicTacToeMove(amir, 3)));
       Assert.Equal("invalid move: not current player", ex.Message);
 
-      ex = Assert.Throws<Exception>(() => game.Move(new TicTacToeMove(game, budi, 3)));
+      ex = Assert.Throws<Exception>(() => game.Move(new TicTacToeMove(budi, 3)));
       Assert.Equal("invalid move: already filled", ex.Message);
     }
 
     [Fact]
     public void WinVertical()
     {
-      game.Move(new TicTacToeMove(game, amir, 4));
-      game.Move(new TicTacToeMove(game, budi, 3));
+      game.Move(new TicTacToeMove(amir, 4));
+      game.Move(new TicTacToeMove(budi, 3));
 
-      game.Move(new TicTacToeMove(game, amir, 7));
-      game.Move(new TicTacToeMove(game, budi, 0));
+      game.Move(new TicTacToeMove(amir, 7));
+      game.Move(new TicTacToeMove(budi, 0));
 
-      game.Move(new TicTacToeMove(game, amir, 1));
+      game.Move(new TicTacToeMove(amir, 1));
 
       Assert.Equal(5, amir.Exp);
       Assert.Equal(2, budi.Exp);
@@ -84,13 +78,13 @@ namespace Xyz.Game.Test
     [Fact]
     public void WinHorizontal()
     {
-      game.Move(new TicTacToeMove(game, amir, 6));
-      game.Move(new TicTacToeMove(game, budi, 3));
+      game.Move(new TicTacToeMove(amir, 6));
+      game.Move(new TicTacToeMove(budi, 3));
 
-      game.Move(new TicTacToeMove(game, amir, 7));
-      game.Move(new TicTacToeMove(game, budi, 0));
+      game.Move(new TicTacToeMove(amir, 7));
+      game.Move(new TicTacToeMove(budi, 0));
 
-      game.Move(new TicTacToeMove(game, amir, 8));
+      game.Move(new TicTacToeMove(amir, 8));
 
       Assert.Equal(5, amir.Exp);
       Assert.Equal(2, budi.Exp);
@@ -99,13 +93,13 @@ namespace Xyz.Game.Test
     [Fact]
     public void WinDiagonal1()
     {
-      game.Move(new TicTacToeMove(game, amir, 0));
-      game.Move(new TicTacToeMove(game, budi, 3));
+      game.Move(new TicTacToeMove(amir, 0));
+      game.Move(new TicTacToeMove(budi, 3));
 
-      game.Move(new TicTacToeMove(game, amir, 4));
-      game.Move(new TicTacToeMove(game, budi, 1));
+      game.Move(new TicTacToeMove(amir, 4));
+      game.Move(new TicTacToeMove(budi, 1));
 
-      game.Move(new TicTacToeMove(game, amir, 8));
+      game.Move(new TicTacToeMove(amir, 8));
 
       Assert.Equal(5, amir.Exp);
       Assert.Equal(2, budi.Exp);
@@ -114,13 +108,13 @@ namespace Xyz.Game.Test
     [Fact]
     public void WinDiagonal2()
     {
-      game.Move(new TicTacToeMove(game, amir, 2));
-      game.Move(new TicTacToeMove(game, budi, 3));
+      game.Move(new TicTacToeMove(amir, 2));
+      game.Move(new TicTacToeMove(budi, 3));
 
-      game.Move(new TicTacToeMove(game, amir, 4));
-      game.Move(new TicTacToeMove(game, budi, 0));
+      game.Move(new TicTacToeMove(amir, 4));
+      game.Move(new TicTacToeMove(budi, 0));
 
-      game.Move(new TicTacToeMove(game, amir, 6));
+      game.Move(new TicTacToeMove(amir, 6));
 
       Assert.Equal(5, amir.Exp);
       Assert.Equal(2, budi.Exp);

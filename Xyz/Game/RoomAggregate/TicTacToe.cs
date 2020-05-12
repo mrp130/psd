@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 namespace Xyz.Game
 {
@@ -15,27 +14,15 @@ namespace Xyz.Game
       }
     }
 
-    public TicTacToeMove(XyzGame game, User player, int gridIndex) : base(game, player)
+    public TicTacToeMove(User player, int gridIndex) : base(player)
     {
-      TicTacToe g = game as TicTacToe;
-      if (g == null)
-      {
-        throw new Exception("invalid game");
-      }
-
-      int max = (g.Size * g.Size - 1);
-      if (gridIndex < 0 || gridIndex > max)
-      {
-        throw new Exception($"index must be between 0-{max}");
-      }
-
       this._gridIndex = gridIndex;
     }
   }
 
   public class TicTacToe : XyzGame
   {
-    public TicTacToe(List<User> users) : base(users) { }
+    protected bool _gameEnded;
 
     private User _p1;
     private User _p2;
@@ -52,17 +39,17 @@ namespace Xyz.Game
     private char _currentSymbol;
     private char[] _board;
 
-    protected override void Init()
+    public TicTacToe(User p1, User p2, int size)
     {
-      if (this._players.Count != 2)
+      if (p1 == null || p2 == null)
       {
         throw new Exception("tic-tac-toe must be played with 2 players");
       }
 
-      this._size = 3;
+      _size = size;
 
-      _p1 = this._players[0];
-      _p2 = this._players[1];
+      _p1 = p1;
+      _p2 = p2;
 
       _currentPlayer = _p1;
       _currentSymbol = 'X';
@@ -70,12 +57,17 @@ namespace Xyz.Game
       _gameEnded = false;
     }
 
-    protected override void DoMove(Move move)
+    public override void Move(Move move)
     {
       TicTacToeMove m = move as TicTacToeMove;
       if (m == null)
       {
         throw new Exception("invalid move: not a tic tac toe move");
+      }
+
+      if (m.GridIndex < 0 || m.GridIndex > _size * _size - 1)
+      {
+        throw new Exception("invalid move: grid index out of bound");
       }
 
       if (!m.Player.Equals(_currentPlayer))

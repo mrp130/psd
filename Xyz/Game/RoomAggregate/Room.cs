@@ -28,7 +28,7 @@ namespace Xyz.Game
 
     public Room(int max)
     {
-      if (max > 1)
+      if (max < 1)
       {
         throw new Exception("max must be greater than 1");
       }
@@ -52,6 +52,21 @@ namespace Xyz.Game
       }
 
       _users.Add(u);
+    }
+
+    public void StartGame(String game, GameConfig config = null)
+    {
+      _game = GameFactory.Create(game, _users, config);
+    }
+
+    public void Move(Move move)
+    {
+      if (_game == null)
+      {
+        throw new Exception("game not started yet");
+      }
+
+      _game.Move(move);
     }
 
 

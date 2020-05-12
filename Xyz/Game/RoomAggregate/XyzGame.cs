@@ -5,28 +5,7 @@ namespace Xyz.Game
 {
   public abstract class XyzGame : IObservable<GameResult>
   {
-    protected bool _gameEnded;
-    protected List<User> _players;
-
-    public XyzGame(List<User> users)
-    {
-      _gameEnded = false;
-      this._players = users;
-      this.Init();
-    }
-
-    public void Move(Move move)
-    {
-      if (_gameEnded)
-      {
-        throw new Exception("game already finished");
-      }
-
-      DoMove(move);
-    }
-
-    protected abstract void Init();
-    protected abstract void DoMove(Move move);
+    public abstract void Move(Move move);
     public abstract string Name();
 
     protected List<IObserver<GameResult>> _observers = new List<IObserver<GameResult>>();
@@ -46,7 +25,6 @@ namespace Xyz.Game
 
   public abstract class Move
   {
-    protected XyzGame _game;
     protected User _player;
 
     public User Player
@@ -57,9 +35,8 @@ namespace Xyz.Game
       }
     }
 
-    public Move(XyzGame game, User player)
+    public Move(User player)
     {
-      _game = game;
       _player = player;
     }
   }

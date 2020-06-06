@@ -2,24 +2,6 @@ using System;
 
 namespace Xyz.Game
 {
-  public class TicTacToeMove : Move
-  {
-    private int _gridIndex;
-
-    public int GridIndex
-    {
-      get
-      {
-        return _gridIndex;
-      }
-    }
-
-    public TicTacToeMove(User player, int gridIndex) : base(player)
-    {
-      this._gridIndex = gridIndex;
-    }
-  }
-
   public class TicTacToe : XyzGame
   {
     protected bool _gameEnded;
@@ -39,7 +21,7 @@ namespace Xyz.Game
     private char _currentSymbol;
     private char[] _board;
 
-    public TicTacToe(User p1, User p2, int size)
+    public TicTacToe(User p1, User p2, int size) : base()
     {
       if (p1 == null || p2 == null)
       {
@@ -178,5 +160,42 @@ namespace Xyz.Game
     }
 
     public override string Name() { return "tic-tac-toe"; }
+  }
+
+  public class TicTacToeMove : Move
+  {
+    private int _gridIndex;
+
+    public int GridIndex
+    {
+      get
+      {
+        return _gridIndex;
+      }
+    }
+
+    public TicTacToeMove(User player, int gridIndex) : base(player)
+    {
+      this._gridIndex = gridIndex;
+    }
+
+    public override bool Equals(object obj)
+    {
+      var move = obj as TicTacToeMove;
+      if (move == null) return false;
+
+      return this._gridIndex == move.GridIndex && this._player == move._player;
+    }
+
+    public override int GetHashCode()
+    {
+      unchecked
+      {
+        int hash = 17;
+        hash = hash * 23 + _player.GetHashCode();
+        hash = hash * 23 + _gridIndex.GetHashCode();
+        return hash;
+      }
+    }
   }
 }

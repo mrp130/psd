@@ -57,7 +57,12 @@ namespace Xyz.Game
 
     public override int GetHashCode()
     {
-      return base.GetHashCode();
+      unchecked
+      {
+        int hash = 17;
+        hash = hash * 23 + _id.GetHashCode();
+        return hash;
+      }
     }
   }
 }

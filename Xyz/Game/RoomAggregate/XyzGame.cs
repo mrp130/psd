@@ -5,6 +5,21 @@ namespace Xyz.Game
 {
   public abstract class XyzGame : IObservable<GameResult>
   {
+    private Guid _id;
+
+    public Guid ID
+    {
+      get
+      {
+        return _id;
+      }
+    }
+
+    public XyzGame()
+    {
+      _id = Guid.NewGuid();
+    }
+
     public abstract void Move(Move move);
     public abstract string Name();
 
@@ -20,6 +35,19 @@ namespace Xyz.Game
       {
         obs.Update(e);
       }
+    }
+
+    public override bool Equals(object obj)
+    {
+      var game = obj as XyzGame;
+      if (game == null) return false;
+
+      return this._id == game.ID;
+    }
+
+    public override int GetHashCode()
+    {
+      return this._id.GetHashCode();
     }
   }
 

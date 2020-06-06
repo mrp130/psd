@@ -69,18 +69,20 @@ namespace Xyz.Game
       _game.Move(move);
     }
 
-
     public override bool Equals(object obj)
     {
       var room = obj as Room;
       if (room == null) return false;
 
-      return this._id == room._id;
+      return this._id == room.ID;
     }
 
     public override int GetHashCode()
     {
-      return base.GetHashCode();
+      unchecked
+      {
+        return this._id.GetHashCode();
+      }
     }
   }
 }

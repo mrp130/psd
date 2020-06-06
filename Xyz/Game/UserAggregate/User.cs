@@ -30,6 +30,8 @@ namespace Xyz.Game
       }
     }
 
+    public User(Guid id, string name) : this(id, name, new Exp(0)) { }
+
     public User(Guid id, string name, Exp score)
     {
       this._id = id;

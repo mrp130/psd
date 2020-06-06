@@ -2,8 +2,6 @@ CREATE TABLE "room"
 (
     id          UUID PRIMARY KEY,
     max_player  INT NOT NULL,
-    game_type   VARCHAR(100),
-    game_config JSONB,
     created_at  TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     updated_at  TIMESTAMPTZ,
     deleted_at  TIMESTAMPTZ
@@ -39,9 +37,12 @@ CREATE TABLE "room_player"
 CREATE TABLE "game"
 (
     id         UUID PRIMARY KEY,
-    room_id    UUID PRIMARY KEY,
+    room_id    UUID NOT NULL,
+    game_type   VARCHAR(100),
+    game_config JSONB,
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
-    deleted_at TIMESTAMPTZ
+    deleted_at TIMESTAMPTZ,
+    FOREIGN KEY (room_id) REFERENCES "room" (id)
 );
 
 CREATE TABLE "game_move"

@@ -18,12 +18,33 @@ namespace Xyz.Game
       }
     }
 
+    public int Max
+    {
+      get
+      {
+        return _max;
+      }
+    }
+
+    public XyzGame Game
+    {
+      get
+      {
+        return _game;
+      }
+    }
+
     public int UserCount
     {
       get
       {
         return _users.Count;
       }
+    }
+
+    public Room(Guid id, int max) : this(max)
+    {
+      this._id = id;
     }
 
     public Room(int max)

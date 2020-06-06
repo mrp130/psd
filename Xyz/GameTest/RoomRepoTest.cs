@@ -74,31 +74,31 @@ namespace Xyz.Game.Test
       _connection.Close();
     }
 
-    // [Fact]
-    // public void ChangeGame()
-    // {
-    //   NpgsqlConnection _connection = new NpgsqlConnection(connString);
-    //   _connection.Open();
+    [Fact]
+    public void ChangeGame()
+    {
+      NpgsqlConnection _connection = new NpgsqlConnection(connString);
+      _connection.Open();
 
-    //   IRoomRepository repo = new PostgresRoomRepository(_connection, null);
+      IRoomRepository repo = new PostgresRoomRepository(_connection, null);
 
-    //   Room r = new Room(4);
-    //   repo.Create(r);
+      Room r = new Room(4);
+      repo.Create(r);
 
-    //   User amir = User.NewUser("Amir");
-    //   User budi = User.NewUser("Budi");
-    //   r.Join(amir);
-    //   r.Join(budi);
-    //   r.StartGame("tic-tac-toe");
+      User amir = User.NewUser("Amir");
+      User budi = User.NewUser("Budi");
+      r.Join(amir);
+      r.Join(budi);
+      r.StartGame("tic-tac-toe", new GameConfig(2, 2));
 
-    //   repo.ChangeGame(r, r.Game, GameConfig.Default());
+      repo.ChangeGame(r, r.Game, new GameConfig(2, 2));
 
-    //   Room r2 = repo.FindById(r.ID);
-    //   Assert.NotNull(r2);
+      // Room r2 = repo.FindById(r.ID);
+      // Assert.NotNull(r2);
 
-    //   Assert.Equal("tic-tac-toe", r2.Game.Name());
+      // Assert.Equal("tic-tac-toe", r2.Game.Name());
 
-    //   _connection.Close();
-    // }
+      _connection.Close();
+    }
   }
 }

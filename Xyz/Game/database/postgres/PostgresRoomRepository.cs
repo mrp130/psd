@@ -1,8 +1,7 @@
 using System;
-using Npgsql;
 
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using Npgsql;
+using NpgsqlTypes;
 
 namespace Xyz.Game.Database.Postgres
 {
@@ -66,7 +65,9 @@ namespace Xyz.Game.Database.Postgres
         cmd.Parameters.AddWithValue("id", game.ID);
         cmd.Parameters.AddWithValue("room_id", room.ID);
         cmd.Parameters.AddWithValue("game_type", game.Name());
-        cmd.Parameters.AddWithValue("game_config", JsonSerializer.Serialize(config));
+
+        cmd.Parameters.Add(new NpgsqlParameter("game_config", NpgsqlDbType.Jsonb) { Value = config });
+
         cmd.ExecuteNonQuery();
       }
     }

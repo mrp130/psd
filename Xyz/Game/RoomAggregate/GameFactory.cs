@@ -7,8 +7,8 @@ namespace Xyz.Game
 {
   public class GameConfig
   {
-    public int WinMult;
-    public int LoseMult;
+    public int WinMult { get; set; }
+    public int LoseMult { get; set; }
 
     public static GameConfig Default()
     {

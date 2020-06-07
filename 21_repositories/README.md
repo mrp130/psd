@@ -5,6 +5,7 @@ Tulisan ini adalah rangkuman dari bab 21 buku Scott Millett, serta ditambahkan d
 ---
 
 Code sebelum ditambahkan repository: https://github.com/mrp130/psd/tree/4-factory
+
 Code setelah ditambahkan repository: https://github.com/mrp130/psd/tree/5-repository
 
 ---

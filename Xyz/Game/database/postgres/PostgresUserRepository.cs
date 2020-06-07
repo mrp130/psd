@@ -26,14 +26,16 @@ left join (
       using (var cmd = new NpgsqlCommand(query, _connection, _transaction))
       {
         cmd.Parameters.AddWithValue("id", id);
-        NpgsqlDataReader reader = cmd.ExecuteReader();
-        if (reader.Read())
+        using (NpgsqlDataReader reader = cmd.ExecuteReader())
         {
-          string name = reader.GetString(0);
-          int exp = reader.GetInt32(1);
+          if (reader.Read())
+          {
+            string name = reader.GetString(0);
+            int exp = reader.GetInt32(1);
 
-          User u = new User(id, name, new Exp(exp));
-          return u;
+            User u = new User(id, name, new Exp(exp));
+            return u;
+          }
         }
       }
 

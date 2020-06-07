@@ -79,9 +79,9 @@ namespace Xyz.Game
       _users.Add(u.ID);
     }
 
-    public void StartGame(String game, GameConfig config = null)
+    public void StartGame(String game, GameConfig config = null, IUserRepository userRepo = null)
     {
-      _game = GameFactory.Create(game, _users, config);
+      _game = GameFactory.Create(game, _users, config, "", userRepo);
     }
 
     public void Move(Move move)

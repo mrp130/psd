@@ -28,6 +28,10 @@ namespace Xyz.Game
 
     public XyzGame Game
     {
+      set
+      {
+        _game = value;
+      }
       get
       {
         return _game;

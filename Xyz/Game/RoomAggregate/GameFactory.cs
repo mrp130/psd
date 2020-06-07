@@ -20,16 +20,20 @@ namespace Xyz.Game
       WinMult = winMult;
       LoseMult = loseMult;
     }
+
+    public GameConfig() : this(1, 1) { }
   }
 
   public class GameFactory
   {
-    public static XyzGame Create(String game, List<User> users, GameConfig config = null)
+    public static XyzGame Create(String game, List<User> users, GameConfig config = null, List<string> moves = null)
     {
       if (config == null)
       {
         config = GameConfig.Default();
       }
+
+      XyzGame result;
 
       if (game.Equals("tic-tac-toe"))
       {
@@ -38,17 +42,29 @@ namespace Xyz.Game
           throw new Exception("tic-tac-toe must be played with 2 players");
         }
 
-        XyzGame result = new TicTacToe(users[0], users[1], 3);
+        result = new TicTacToe(users[0], users[1], 3);
         GameResultHandler win = new WinHandler(new Multiplier(new TicTacToeWin(), config.WinMult));
         GameResultHandler lose = new LoseHandler(new Multiplier(new TicTacToeLose(), config.LoseMult));
 
         result.Attach(win);
         result.Attach(lose);
+      }
+      else
+      {
+        throw new Exception("game not found");
+      }
 
+      if (moves == null)
+      {
         return result;
       }
 
-      throw new Exception("game not found");
+      foreach (var move in moves)
+      {
+        // result.Move(move);
+      }
+
+      return result;
     }
   }
 }

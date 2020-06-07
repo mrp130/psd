@@ -1,7 +1,11 @@
 using System;
+using System.Collections.Generic;
 
 using Npgsql;
 using NpgsqlTypes;
+
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Xyz.Game.Database.Postgres
 {
@@ -18,7 +22,8 @@ namespace Xyz.Game.Database.Postgres
 
     public Room FindById(Guid id)
     {
-      string query = "SELECT max_player FROM room WHERE id = @id AND deleted_at is null";
+      Room r;
+      string query = @"SELECT max_player FROM room WHERE id = @id AND deleted_at is null";
       using (var cmd = new NpgsqlCommand(query, _connection))
       {
         cmd.Parameters.AddWithValue("id", id);
@@ -26,13 +31,76 @@ namespace Xyz.Game.Database.Postgres
         if (reader.Read())
         {
           int max = reader.GetInt32(0);
-          Room r = new Room(id, max);
-
-          return r;
+          r = new Room(id, max);
         }
+        else
+        {
+          return null;
+        }
+
+        reader.Close();
       }
 
-      return null;
+      r.Game = getGame(r);
+      return r;
+    }
+
+    public XyzGame getGame(Room room)
+    {
+      Guid id;
+      Guid room_id;
+      string type;
+      GameConfig config;
+
+      List<User> users = new List<User>();
+      List<string> moves = new List<string>();
+
+      string query = "SELECT id, room_id, game_type, game_config FROM game WHERE room_id = @room_id AND deleted_at is null ORDER BY created_at DESC LIMIT 1";
+      using (var cmd = new NpgsqlCommand(query, _connection))
+      {
+        cmd.Parameters.AddWithValue("room_id", room.ID);
+        NpgsqlDataReader reader = cmd.ExecuteReader();
+        if (reader.Read())
+        {
+          id = reader.GetGuid(0);
+          room_id = reader.GetGuid(1);
+          type = reader.GetString(2);
+          config = reader.GetFieldValue<GameConfig>(3);
+        }
+        else
+        {
+          return null;
+        }
+        reader.Close();
+      }
+
+      query = "SELECT user_id FROM room_player WHERE room_id = @room_id AND deleted_at is null";
+      using (var cmd = new NpgsqlCommand(query, _connection))
+      {
+        cmd.Parameters.AddWithValue("room_id", room.ID);
+        NpgsqlDataReader reader = cmd.ExecuteReader();
+        while (reader.Read())
+        {
+          Guid userID = reader.GetGuid(0);
+          users.Add(new User(userID, ""));
+        }
+        reader.Close();
+      }
+
+      query = "SELECT move FROM game_move WHERE game_id = @game_id";
+      using (var cmd = new NpgsqlCommand(query, _connection))
+      {
+        cmd.Parameters.AddWithValue("game_id", id);
+        NpgsqlDataReader reader = cmd.ExecuteReader();
+        while (reader.Read())
+        {
+          string jsonString = reader.GetString(0);
+          moves.Add(jsonString);
+        }
+        reader.Close();
+      }
+
+      return GameFactory.Create(type, users, config, moves);
     }
 
     public void Create(Room room)
@@ -53,6 +121,17 @@ namespace Xyz.Game.Database.Postgres
       {
         cmd.Parameters.AddWithValue("id", room.ID);
         cmd.Parameters.AddWithValue("max", player);
+        cmd.ExecuteNonQuery();
+      }
+    }
+
+    public void Join(Room room, User user)
+    {
+      string query = "INSERT INTO room_player(user_id, room_id) VALUES(@user_id, @room_id)";
+      using (var cmd = new NpgsqlCommand(query, _connection))
+      {
+        cmd.Parameters.AddWithValue("user_id", user.ID);
+        cmd.Parameters.AddWithValue("room_id", room.ID);
         cmd.ExecuteNonQuery();
       }
     }
@@ -82,5 +161,21 @@ namespace Xyz.Game.Database.Postgres
       }
     }
 
+    public void AddMove(Room room, Move move)
+    {
+      string query = "INSERT INTO game_move(id, game_id, move, state) VALUES(@id, @game_id, @move, @state)";
+      using (var cmd = new NpgsqlCommand(query, _connection))
+      {
+        cmd.Parameters.AddWithValue("id", Guid.NewGuid());
+        cmd.Parameters.AddWithValue("game_id", room.Game.ID);
+
+        string jsonString = JsonSerializer.Serialize(room.Game.GetMemento());
+
+        cmd.Parameters.Add(new NpgsqlParameter("move", NpgsqlDbType.Jsonb) { Value = move });
+        cmd.Parameters.Add(new NpgsqlParameter("state", NpgsqlDbType.Jsonb) { Value = jsonString });
+
+        cmd.ExecuteNonQuery();
+      }
+    }
   }
 }

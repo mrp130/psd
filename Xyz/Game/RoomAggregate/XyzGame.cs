@@ -22,6 +22,7 @@ namespace Xyz.Game
 
     public abstract void Move(Move move);
     public abstract string Name();
+    public abstract object GetMemento();
 
     protected List<IObserver<GameResult>> _observers = new List<IObserver<GameResult>>();
     public void Attach(IObserver<GameResult> obs)

@@ -50,6 +50,7 @@ CREATE TABLE "game_move"
     id         UUID PRIMARY KEY,
     game_id    UUID  NOT NULL,
     move       JSONB NOT NULL,
+    state      JSONB NOT NULL,
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (game_id) REFERENCES "room" (id)
+    FOREIGN KEY (game_id) REFERENCES "game" (id)
 );

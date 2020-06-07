@@ -81,22 +81,40 @@ namespace Xyz.Game.Test
       _connection.Open();
 
       IRoomRepository repo = new PostgresRoomRepository(_connection, null);
+      IUserRepository userRepo = new PostgresUserRepository(_connection, null);
 
       Room r = new Room(4);
       repo.Create(r);
 
       User amir = User.NewUser("Amir");
       User budi = User.NewUser("Budi");
+
+      userRepo.Create(amir);
+      userRepo.Create(budi);
+
       r.Join(amir);
       r.Join(budi);
-      r.StartGame("tic-tac-toe", new GameConfig(2, 2));
 
-      repo.ChangeGame(r, r.Game, new GameConfig(2, 2));
+      repo.Join(r, amir);
+      repo.Join(r, budi);
 
-      // Room r2 = repo.FindById(r.ID);
-      // Assert.NotNull(r2);
+      GameConfig config = new GameConfig(2, 2);
+      r.StartGame("tic-tac-toe", config);
 
-      // Assert.Equal("tic-tac-toe", r2.Game.Name());
+      repo.ChangeGame(r, r.Game, config);
+
+      Room r2 = repo.FindById(r.ID);
+      Assert.NotNull(r2);
+
+      Assert.Equal("tic-tac-toe", r2.Game.Name());
+
+      Move m = new TicTacToeMove(amir, 3);
+      r.Move(m);
+      repo.AddMove(r, m);
+
+      Move m2 = new TicTacToeMove(budi, 2);
+      r.Move(m2);
+      repo.AddMove(r, m2);
 
       _connection.Close();
     }

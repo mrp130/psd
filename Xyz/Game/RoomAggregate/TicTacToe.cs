@@ -2,6 +2,27 @@ using System;
 
 namespace Xyz.Game
 {
+  public class TicTacToeMemento
+  {
+    public bool GameEnded { set; get; }
+    public User P1 { set; get; }
+    public User P2 { set; get; }
+    public int Size { set; get; }
+    public User CurrentPlayer { set; get; }
+    public char CurrentSymbol { set; get; }
+    public char[] Board { set; get; }
+
+    public TicTacToeMemento(User p1, User p2, User current, int size, bool gameEnded, char currentSymbol, char[] board)
+    {
+      this.GameEnded = gameEnded;
+      this.P1 = p1;
+      this.P2 = p2;
+      this.Size = size;
+      this.CurrentPlayer = current;
+      this.CurrentSymbol = currentSymbol;
+      this.Board = board;
+    }
+  }
   public class TicTacToe : XyzGame
   {
     protected bool _gameEnded;
@@ -36,6 +57,11 @@ namespace Xyz.Game
       _currentPlayer = _p1;
       _currentSymbol = 'X';
       _board = new char[_size * _size];
+      for (int i = 0; i < _size * _size; i++)
+      {
+        _board[i] = '-';
+      }
+
       _gameEnded = false;
     }
 
@@ -57,7 +83,7 @@ namespace Xyz.Game
         throw new Exception("invalid move: not current player");
       }
 
-      if (_board[m.GridIndex] != '\0')
+      if (_board[m.GridIndex] != '-')
       {
         throw new Exception("invalid move: already filled");
       }
@@ -91,7 +117,7 @@ namespace Xyz.Game
         for (int j = 0; j < _size; j++)
         {
           int idx = i * _size + j;
-          if (_board[idx] == '\0') return false;
+          if (_board[idx] == '-') return false;
         }
       }
 
@@ -160,6 +186,10 @@ namespace Xyz.Game
     }
 
     public override string Name() { return "tic-tac-toe"; }
+    public override object GetMemento()
+    {
+      return new TicTacToeMemento(_p1, _p2, _currentPlayer, _size, _gameEnded, _currentSymbol, _board);
+    }
   }
 
   public class TicTacToeMove : Move

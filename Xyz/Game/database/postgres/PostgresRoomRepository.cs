@@ -48,14 +48,12 @@ namespace Xyz.Game.Database.Postgres
     public XyzGame getGame(Room room)
     {
       Guid id;
-      Guid room_id;
       string type;
       GameConfig config;
+      List<Guid> users = new List<Guid>();
+      string lastState = "";
 
-      List<User> users = new List<User>();
-      List<string> moves = new List<string>();
-
-      string query = "SELECT id, room_id, game_type, game_config FROM game WHERE room_id = @room_id AND deleted_at is null ORDER BY created_at DESC LIMIT 1";
+      string query = "SELECT id, game_type, game_config FROM game WHERE room_id = @room_id AND deleted_at is null ORDER BY created_at DESC LIMIT 1";
       using (var cmd = new NpgsqlCommand(query, _connection))
       {
         cmd.Parameters.AddWithValue("room_id", room.ID);
@@ -63,9 +61,8 @@ namespace Xyz.Game.Database.Postgres
         if (reader.Read())
         {
           id = reader.GetGuid(0);
-          room_id = reader.GetGuid(1);
-          type = reader.GetString(2);
-          config = reader.GetFieldValue<GameConfig>(3);
+          type = reader.GetString(1);
+          config = reader.GetFieldValue<GameConfig>(2);
         }
         else
         {
@@ -82,25 +79,24 @@ namespace Xyz.Game.Database.Postgres
         while (reader.Read())
         {
           Guid userID = reader.GetGuid(0);
-          users.Add(new User(userID, ""));
+          users.Add(userID);
         }
         reader.Close();
       }
 
-      query = "SELECT move FROM game_move WHERE game_id = @game_id";
+      query = "SELECT state FROM game_move WHERE game_id = @game_id ORDER BY created_at DESC limit 1";
       using (var cmd = new NpgsqlCommand(query, _connection))
       {
         cmd.Parameters.AddWithValue("game_id", id);
         NpgsqlDataReader reader = cmd.ExecuteReader();
-        while (reader.Read())
+        if (reader.Read())
         {
-          string jsonString = reader.GetString(0);
-          moves.Add(jsonString);
+          lastState = reader.GetString(0);
         }
         reader.Close();
       }
 
-      return GameFactory.Create(type, users, config, moves);
+      return GameFactory.Create(type, users, config, lastState, new PostgresUserRepository(_connection, _transaction));
     }
 
     public void Create(Room room)

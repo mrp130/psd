@@ -108,13 +108,19 @@ namespace Xyz.Game.Test
 
       Assert.Equal("tic-tac-toe", r2.Game.Name());
 
-      Move m = new TicTacToeMove(amir, 3);
+      Move m = new TicTacToeMove(amir.ID, 3);
       r.Move(m);
       repo.AddMove(r, m);
 
-      Move m2 = new TicTacToeMove(budi, 2);
+      Move m2 = new TicTacToeMove(budi.ID, 2);
       r.Move(m2);
       repo.AddMove(r, m2);
+
+      Room r3 = repo.FindById(r.ID);
+      char[] board = ((TicTacToeMemento) r3.Game.GetMemento()).Board;
+      Assert.Equal('-', board[1]);
+      Assert.Equal('O', board[2]);
+      Assert.Equal('X', board[3]);
 
       _connection.Close();
     }

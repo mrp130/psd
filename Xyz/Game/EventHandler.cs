@@ -6,10 +6,12 @@ namespace Xyz.Game
 {
   public abstract class GameResultHandler : IObserver<GameResult>
   {
+    protected IUserRepository userRepository;
     protected IExpGainer _gainer;
 
-    public GameResultHandler(IExpGainer gainer)
+    public GameResultHandler(IUserRepository repo, IExpGainer gainer)
     {
+      userRepository = repo;
       _gainer = gainer;
     }
 
@@ -18,27 +20,33 @@ namespace Xyz.Game
 
   public class WinHandler : GameResultHandler
   {
-    public WinHandler(IExpGainer gainer) : base(gainer) { }
+    public WinHandler(IUserRepository repo, IExpGainer gainer) : base(repo, gainer) { }
 
     public override void Update(GameResult e)
     {
+      if(userRepository == null) return;
+      
       Win ev = e as Win;
       if (ev == null) return;
 
-      ev.Player.AddExp(_gainer.Gain());
+      User u = userRepository.FindById(ev.Player);
+      userRepository.AddExp(u, _gainer.Gain());
     }
   }
 
   public class LoseHandler : GameResultHandler
   {
-    public LoseHandler(IExpGainer gainer) : base(gainer) { }
+    public LoseHandler(IUserRepository repo, IExpGainer gainer) : base(repo, gainer) { }
 
     public override void Update(GameResult e)
     {
+      if(userRepository == null) return;
+
       Lose ev = e as Lose;
       if (ev == null) return;
 
-      ev.Player.AddExp(_gainer.Gain());
+      User u = userRepository.FindById(ev.Player);
+      userRepository.AddExp(u, _gainer.Gain());
     }
   }
 }

@@ -17,9 +17,9 @@ namespace Xyz.Game.Test
       amir = User.NewUser("Amir");
       budi = User.NewUser("Budi");
 
-      List<User> users = new List<User>();
-      users.Add(amir);
-      users.Add(budi);
+      List<Guid> users = new List<Guid>();
+      users.Add(amir.ID);
+      users.Add(budi.ID);
 
       game = GameFactory.Create("tic-tac-toe", users);
     }
@@ -29,8 +29,8 @@ namespace Xyz.Game.Test
     {
       Exception result = null;
 
-      List<User> users = new List<User>();
-      users.Add(User.NewUser("Amir"));
+      List<Guid> users = new List<Guid>();
+      users.Add(User.NewUser("Amir").ID);
       try
       {
         XyzGame game = GameFactory.Create("tic-tac-toe", users);
@@ -46,78 +46,66 @@ namespace Xyz.Game.Test
     [Fact]
     public void InvalidMove()
     {
-      game.Move(new TicTacToeMove(amir, 3));
+      game.Move(new TicTacToeMove(amir.ID, 3));
 
       Exception ex = null;
 
       ex = Assert.Throws<Exception>(() => game.Move(null));
       Assert.Equal("invalid move: not a tic tac toe move", ex.Message);
 
-      ex = Assert.Throws<Exception>(() => game.Move(new TicTacToeMove(amir, 3)));
+      ex = Assert.Throws<Exception>(() => game.Move(new TicTacToeMove(amir.ID, 3)));
       Assert.Equal("invalid move: not current player", ex.Message);
 
-      ex = Assert.Throws<Exception>(() => game.Move(new TicTacToeMove(budi, 3)));
+      ex = Assert.Throws<Exception>(() => game.Move(new TicTacToeMove(budi.ID, 3)));
       Assert.Equal("invalid move: already filled", ex.Message);
     }
 
     [Fact]
     public void WinVertical()
     {
-      game.Move(new TicTacToeMove(amir, 4));
-      game.Move(new TicTacToeMove(budi, 3));
+      game.Move(new TicTacToeMove(amir.ID, 4));
+      game.Move(new TicTacToeMove(budi.ID, 3));
 
-      game.Move(new TicTacToeMove(amir, 7));
-      game.Move(new TicTacToeMove(budi, 0));
+      game.Move(new TicTacToeMove(amir.ID, 7));
+      game.Move(new TicTacToeMove(budi.ID, 0));
 
-      game.Move(new TicTacToeMove(amir, 1));
-
-      Assert.Equal(5, amir.Exp);
-      Assert.Equal(2, budi.Exp);
+      game.Move(new TicTacToeMove(amir.ID, 1));
     }
 
     [Fact]
     public void WinHorizontal()
     {
-      game.Move(new TicTacToeMove(amir, 6));
-      game.Move(new TicTacToeMove(budi, 3));
+      game.Move(new TicTacToeMove(amir.ID, 6));
+      game.Move(new TicTacToeMove(budi.ID, 3));
 
-      game.Move(new TicTacToeMove(amir, 7));
-      game.Move(new TicTacToeMove(budi, 0));
+      game.Move(new TicTacToeMove(amir.ID, 7));
+      game.Move(new TicTacToeMove(budi.ID, 0));
 
-      game.Move(new TicTacToeMove(amir, 8));
-
-      Assert.Equal(5, amir.Exp);
-      Assert.Equal(2, budi.Exp);
+      game.Move(new TicTacToeMove(amir.ID, 8));
     }
 
     [Fact]
     public void WinDiagonal1()
     {
-      game.Move(new TicTacToeMove(amir, 0));
-      game.Move(new TicTacToeMove(budi, 3));
+      game.Move(new TicTacToeMove(amir.ID, 0));
+      game.Move(new TicTacToeMove(budi.ID, 3));
 
-      game.Move(new TicTacToeMove(amir, 4));
-      game.Move(new TicTacToeMove(budi, 1));
+      game.Move(new TicTacToeMove(amir.ID, 4));
+      game.Move(new TicTacToeMove(budi.ID, 1));
 
-      game.Move(new TicTacToeMove(amir, 8));
-
-      Assert.Equal(5, amir.Exp);
-      Assert.Equal(2, budi.Exp);
+      game.Move(new TicTacToeMove(amir.ID, 8));
     }
 
     [Fact]
     public void WinDiagonal2()
     {
-      game.Move(new TicTacToeMove(amir, 2));
-      game.Move(new TicTacToeMove(budi, 3));
+      game.Move(new TicTacToeMove(amir.ID, 2));
+      game.Move(new TicTacToeMove(budi.ID, 3));
 
-      game.Move(new TicTacToeMove(amir, 4));
-      game.Move(new TicTacToeMove(budi, 0));
+      game.Move(new TicTacToeMove(amir.ID, 4));
+      game.Move(new TicTacToeMove(budi.ID, 0));
 
-      game.Move(new TicTacToeMove(amir, 6));
-
-      Assert.Equal(5, amir.Exp);
-      Assert.Equal(2, budi.Exp);
+      game.Move(new TicTacToeMove(amir.ID, 6));
     }
   }
 }

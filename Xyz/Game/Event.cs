@@ -4,8 +4,8 @@ namespace Xyz.Game
 {
   public abstract class GameResult
   {
-    public User Player { get; private set; }
-    public GameResult(User player)
+    public Guid Player { get; private set; }
+    public GameResult(Guid player)
     {
       this.Player = player;
     }
@@ -13,16 +13,16 @@ namespace Xyz.Game
 
   public class Win : GameResult
   {
-    public Win(User player) : base(player) { }
+    public Win(Guid player) : base(player) { }
   }
 
   public class Lose : GameResult
   {
-    public Lose(User player) : base(player) { }
+    public Lose(Guid player) : base(player) { }
   }
 
   public class Draw : GameResult
   {
-    public Draw(User player) : base(player) { }
+    public Draw(Guid player) : base(player) { }
   }
 }

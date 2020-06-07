@@ -23,6 +23,7 @@ namespace Xyz.Game
     public abstract void Move(Move move);
     public abstract string Name();
     public abstract object GetMemento();
+    public abstract void LoadMemento(object memento);
 
     protected List<IObserver<GameResult>> _observers = new List<IObserver<GameResult>>();
     public void Attach(IObserver<GameResult> obs)
@@ -54,9 +55,9 @@ namespace Xyz.Game
 
   public abstract class Move
   {
-    protected User _player;
+    protected Guid _player;
 
-    public User Player
+    public Guid Player
     {
       get
       {
@@ -64,7 +65,7 @@ namespace Xyz.Game
       }
     }
 
-    public Move(User player)
+    public Move(Guid player)
     {
       _player = player;
     }

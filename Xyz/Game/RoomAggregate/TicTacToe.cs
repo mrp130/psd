@@ -5,14 +5,15 @@ namespace Xyz.Game
   public class TicTacToeMemento
   {
     public bool GameEnded { set; get; }
-    public User P1 { set; get; }
-    public User P2 { set; get; }
+    public Guid P1 { set; get; }
+    public Guid P2 { set; get; }
     public int Size { set; get; }
-    public User CurrentPlayer { set; get; }
+    public Guid CurrentPlayer { set; get; }
     public char CurrentSymbol { set; get; }
     public char[] Board { set; get; }
 
-    public TicTacToeMemento(User p1, User p2, User current, int size, bool gameEnded, char currentSymbol, char[] board)
+    public TicTacToeMemento() { }
+    public TicTacToeMemento(Guid p1, Guid p2, Guid current, int size, bool gameEnded, char currentSymbol, char[] board)
     {
       this.GameEnded = gameEnded;
       this.P1 = p1;
@@ -27,8 +28,8 @@ namespace Xyz.Game
   {
     protected bool _gameEnded;
 
-    private User _p1;
-    private User _p2;
+    private Guid _p1;
+    private Guid _p2;
     private int _size;
     public int Size
     {
@@ -38,11 +39,11 @@ namespace Xyz.Game
       }
     }
 
-    private User _currentPlayer;
+    private Guid _currentPlayer;
     private char _currentSymbol;
     private char[] _board;
 
-    public TicTacToe(User p1, User p2, int size) : base()
+    public TicTacToe(Guid p1, Guid p2, int size) : base()
     {
       if (p1 == null || p2 == null)
       {
@@ -190,6 +191,21 @@ namespace Xyz.Game
     {
       return new TicTacToeMemento(_p1, _p2, _currentPlayer, _size, _gameEnded, _currentSymbol, _board);
     }
+
+    public override void LoadMemento(object memento)
+    {
+      var m = memento as TicTacToeMemento;
+      if (m == null) throw new Exception("wrong memento");
+
+      this._p1 = m.P1;
+      this._p2 = m.P2;
+      this._currentPlayer = m.CurrentPlayer;
+      this._currentSymbol = m.CurrentSymbol;
+      this._gameEnded = m.GameEnded;
+      this._board = m.Board;
+      this._size = m.Size;
+    }
+
   }
 
   public class TicTacToeMove : Move
@@ -204,7 +220,7 @@ namespace Xyz.Game
       }
     }
 
-    public TicTacToeMove(User player, int gridIndex) : base(player)
+    public TicTacToeMove(Guid player, int gridIndex) : base(player)
     {
       this._gridIndex = gridIndex;
     }

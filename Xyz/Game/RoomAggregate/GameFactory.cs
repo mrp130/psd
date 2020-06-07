@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 using Xyz.Game.ExpGainer;
 
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
 namespace Xyz.Game
 {
   public class GameConfig
@@ -26,7 +29,7 @@ namespace Xyz.Game
 
   public class GameFactory
   {
-    public static XyzGame Create(String game, List<User> users, GameConfig config = null, List<string> moves = null)
+    public static XyzGame Create(String game, List<Guid> users, GameConfig config = null, string lastState = "", IUserRepository userRepo = null)
     {
       if (config == null)
       {
@@ -43,8 +46,8 @@ namespace Xyz.Game
         }
 
         result = new TicTacToe(users[0], users[1], 3);
-        GameResultHandler win = new WinHandler(new Multiplier(new TicTacToeWin(), config.WinMult));
-        GameResultHandler lose = new LoseHandler(new Multiplier(new TicTacToeLose(), config.LoseMult));
+        GameResultHandler win = new WinHandler(userRepo, new Multiplier(new TicTacToeWin(), config.WinMult));
+        GameResultHandler lose = new LoseHandler(userRepo, new Multiplier(new TicTacToeLose(), config.LoseMult));
 
         result.Attach(win);
         result.Attach(lose);
@@ -54,16 +57,16 @@ namespace Xyz.Game
         throw new Exception("game not found");
       }
 
-      if (moves == null)
+      if (lastState == null || lastState == "")
       {
         return result;
       }
 
-      foreach (var move in moves)
+      if (game.Equals("tic-tac-toe"))
       {
-        // result.Move(move);
+        TicTacToeMemento memento = JsonSerializer.Deserialize<TicTacToeMemento>(lastState);
+        result.LoadMemento(memento);
       }
-
       return result;
     }
   }

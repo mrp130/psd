@@ -39,6 +39,9 @@ namespace Xyz.Game.Test
       room.Move(new TicTacToeMove(budi.ID, 0));
 
       room.Move(new TicTacToeMove(amir.ID, 1));
+
+      Exception ex = Assert.Throws<Exception>(() => room.Move(new TicTacToeMove(budi.ID, 3)));
+      Assert.Equal("game already ended", ex.Message);
     }
   }
 }

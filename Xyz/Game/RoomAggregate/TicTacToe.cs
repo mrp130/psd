@@ -68,6 +68,10 @@ namespace Xyz.Game
 
     public override void Move(Move move)
     {
+      if(_gameEnded) {
+        throw new Exception("game already ended");
+      }
+
       TicTacToeMove m = move as TicTacToeMove;
       if (m == null)
       {

@@ -70,6 +70,9 @@ namespace Xyz.Game.Test
       game.Move(new TicTacToeMove(budi.ID, 0));
 
       game.Move(new TicTacToeMove(amir.ID, 1));
+
+      Exception ex = Assert.Throws<Exception>(() => game.Move(new TicTacToeMove(budi.ID, 3)));
+      Assert.Equal("game already ended", ex.Message);
     }
 
     [Fact]
@@ -82,6 +85,9 @@ namespace Xyz.Game.Test
       game.Move(new TicTacToeMove(budi.ID, 0));
 
       game.Move(new TicTacToeMove(amir.ID, 8));
+
+      Exception ex = Assert.Throws<Exception>(() => game.Move(new TicTacToeMove(budi.ID, 3)));
+      Assert.Equal("game already ended", ex.Message);
     }
 
     [Fact]
@@ -94,6 +100,9 @@ namespace Xyz.Game.Test
       game.Move(new TicTacToeMove(budi.ID, 1));
 
       game.Move(new TicTacToeMove(amir.ID, 8));
+
+      Exception ex = Assert.Throws<Exception>(() => game.Move(new TicTacToeMove(budi.ID, 3)));
+      Assert.Equal("game already ended", ex.Message);
     }
 
     [Fact]
@@ -106,6 +115,9 @@ namespace Xyz.Game.Test
       game.Move(new TicTacToeMove(budi.ID, 0));
 
       game.Move(new TicTacToeMove(amir.ID, 6));
+
+      Exception ex = Assert.Throws<Exception>(() => game.Move(new TicTacToeMove(budi.ID, 3)));
+      Assert.Equal("game already ended", ex.Message);
     }
   }
 }

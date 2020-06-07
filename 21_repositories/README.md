@@ -186,3 +186,9 @@ Pastikan tidak ada error. Sekarang seharusnya file [Game.csproj](../Xyz/Game/Gam
 ```
 dotnet add package System.Text.Json
 ```
+
+### Code
+
+Code PT.XYZ yang sudah ditambahkan repository dapat dilihat di: https://github.com/mrp130/psd/tree/5-repository.
+
+Perhatikan semua `interface` dari repo dan unit of work dletakkan di `namespace` domain model. Sedangkan implementasinya, dibuatkan `namespace` terpisah bernama `postgres` [disini](https://github.com/mrp130/psd/tree/master/Xyz/Game/database/postgres).

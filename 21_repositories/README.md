@@ -138,12 +138,6 @@ Untuk melakukan proses commit/rollback dengan lebih rapi, biasanya developer men
 
 Bila Anda menggunakan .NET Entity Framework, sudah disediakan class **DbContext** yang mengurus masalah transaksi ini.
 
-## Implementasi
-
-Untuk mengimplementasikan repository, pilihlah terlebih dahulu tempat dimana data Anda akan disimpan. Cara melakukan persistensi / pengambilan data juga beragam. Anda bisa melakukan raw query langsung ke database via driver yang disediakan. Atau bila menggunakan .NET Framework, bisa menggunakan Entity Framework yang telah disediakan .NET seperti yang telah diajarkan di kelas praktikum.
-
-Dalam contoh ini, misalkan data akan disimpan ke dalam database `Postgresql`. Agar lebih terbayang proses query-nya, implementasi pada contoh kasus ini akan menggunakan raw query.
-
 ## Peran Lain Repository
 
 ### Entity ID Generation
@@ -161,6 +155,14 @@ Repository mengurus masalah pessimistic concurrency. Di dalam repository, bisa d
 ### Audit Trails
 
 Repository mengurus semua pencatatan metadata untuk keperluan audit. Misal, setiap ada perubahan, maka data lama dan baru dicatat dalam table history. Atau contoh lain yang lebih mudah: setiap ada perubahan data, maka kolom `updated_at` diganti menjadi timestamp sekarang.
+
+---
+
+## Implementasi
+
+Untuk mengimplementasikan repository, pilihlah terlebih dahulu tempat dimana data Anda akan disimpan. Cara melakukan persistensi / pengambilan data juga beragam. Anda bisa melakukan raw query langsung ke database via driver yang disediakan. Atau bila menggunakan .NET Framework, bisa menggunakan Entity Framework yang telah disediakan .NET seperti yang telah diajarkan di kelas praktikum.
+
+Dalam contoh ini, misalkan data akan disimpan ke dalam database `Postgresql`. Agar lebih terbayang proses query-nya, implementasi pada contoh kasus ini akan menggunakan raw query.
 
 ### Update Database
 

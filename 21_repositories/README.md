@@ -133,7 +133,7 @@ Ketika melakukan persistensi, idealnya kita perlu mengurus transaction pada data
 
 Misal, suatu application layer menjalankan method `A` yang menjalankan query untuk mengurangkan uang dari saldo user. Kemudian dilanjutkan method `B` yang menjalankan query untuk mengurangkan stok barang di dalam gudang. Ternyata karena suatu hal, method `B` ini error. Tentunya kita perlu melakukan rollback agar query dari method `A` tidak benar-benar terjadi. Sehingga saldo user tidak jadi berkurang.
 
-Untuk melakukan proses commit/rollback dengan lebih rapi, biasanya developer menerapkan pattern Unit of Work yang telah dideskripsikan Martin Fowler ([baca disini](https://martinfowler.com/eaaCatalog/unitOfWork.html)).
+Untuk melakukan proses commit/rollback dengan lebih rapi, biasanya developer menerapkan pattern Unit of Work yang telah dideskripsikan Martin Fowler ([baca disini](https://martinfowler.com/eaaCatalog/unitOfWork.html)). Contoh pada code project PT. XYZ dapat dilihat [disini](https://github.com/mrp130/psd/blob/master/Xyz/Game/database/postgres/PostgresUnitOfWork.cs). Penerapannya dapat dilihat di unit test [UnitOfWorkTest.cs](https://github.com/mrp130/psd/blob/master/Xyz/GameTest/UnitOfWorkTest.cs).
 
 Bila Anda menggunakan .NET Entity Framework, sudah disediakan class **DbContext** yang mengurus masalah transaksi ini.
 

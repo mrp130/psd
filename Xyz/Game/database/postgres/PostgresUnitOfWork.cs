@@ -41,9 +41,8 @@ namespace Xyz.Game.Database.Postgres
       }
     }
 
-    public PostgresUnitOfWork()
+    public PostgresUnitOfWork(string connectionString)
     {
-      string connectionString = Environment.GetEnvironmentVariable("pg_conn");
       _connection = new NpgsqlConnection(connectionString);
       _connection.Open();
       _transaction = _connection.BeginTransaction();
@@ -58,6 +57,27 @@ namespace Xyz.Game.Database.Postgres
     {
       _transaction.Rollback();
     }
+
+    private bool disposed = false;
+    public void Dispose()
+    {
+      Dispose(true);
+      GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+      if (!this.disposed)
+      {
+        if (disposing)
+        {
+          _connection.Close();
+        }
+
+        disposed = true;
+      }
+    }
+
 
   }
 }

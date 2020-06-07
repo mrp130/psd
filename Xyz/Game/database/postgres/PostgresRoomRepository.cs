@@ -24,7 +24,7 @@ namespace Xyz.Game.Database.Postgres
     {
       Room r;
       string query = @"SELECT max_player FROM room WHERE id = @id AND deleted_at is null";
-      using (var cmd = new NpgsqlCommand(query, _connection))
+      using (var cmd = new NpgsqlCommand(query, _connection, _transaction))
       {
         cmd.Parameters.AddWithValue("id", id);
         NpgsqlDataReader reader = cmd.ExecuteReader();
@@ -54,7 +54,7 @@ namespace Xyz.Game.Database.Postgres
       string lastState = "";
 
       string query = "SELECT id, game_type, game_config FROM game WHERE room_id = @room_id AND deleted_at is null ORDER BY created_at DESC LIMIT 1";
-      using (var cmd = new NpgsqlCommand(query, _connection))
+      using (var cmd = new NpgsqlCommand(query, _connection, _transaction))
       {
         cmd.Parameters.AddWithValue("room_id", room.ID);
         NpgsqlDataReader reader = cmd.ExecuteReader();
@@ -72,7 +72,7 @@ namespace Xyz.Game.Database.Postgres
       }
 
       query = "SELECT user_id FROM room_player WHERE room_id = @room_id AND deleted_at is null";
-      using (var cmd = new NpgsqlCommand(query, _connection))
+      using (var cmd = new NpgsqlCommand(query, _connection, _transaction))
       {
         cmd.Parameters.AddWithValue("room_id", room.ID);
         NpgsqlDataReader reader = cmd.ExecuteReader();
@@ -85,7 +85,7 @@ namespace Xyz.Game.Database.Postgres
       }
 
       query = "SELECT state FROM game_move WHERE game_id = @game_id ORDER BY created_at DESC limit 1";
-      using (var cmd = new NpgsqlCommand(query, _connection))
+      using (var cmd = new NpgsqlCommand(query, _connection, _transaction))
       {
         cmd.Parameters.AddWithValue("game_id", id);
         NpgsqlDataReader reader = cmd.ExecuteReader();
@@ -102,7 +102,7 @@ namespace Xyz.Game.Database.Postgres
     public void Create(Room room)
     {
       string query = "INSERT INTO room (id, max_player) VALUES(@id, @max)";
-      using (var cmd = new NpgsqlCommand(query, _connection))
+      using (var cmd = new NpgsqlCommand(query, _connection, _transaction))
       {
         cmd.Parameters.AddWithValue("id", room.ID);
         cmd.Parameters.AddWithValue("max", room.Max);
@@ -113,7 +113,7 @@ namespace Xyz.Game.Database.Postgres
     public void UpdateMaxPlayer(Room room, int player)
     {
       string query = "UPDATE room SET max_player = @max, updated_at = CURRENT_TIMESTAMP WHERE id = @id AND deleted_at is null";
-      using (var cmd = new NpgsqlCommand(query, _connection))
+      using (var cmd = new NpgsqlCommand(query, _connection, _transaction))
       {
         cmd.Parameters.AddWithValue("id", room.ID);
         cmd.Parameters.AddWithValue("max", player);
@@ -124,7 +124,7 @@ namespace Xyz.Game.Database.Postgres
     public void Join(Room room, User user)
     {
       string query = "INSERT INTO room_player(user_id, room_id) VALUES(@user_id, @room_id)";
-      using (var cmd = new NpgsqlCommand(query, _connection))
+      using (var cmd = new NpgsqlCommand(query, _connection, _transaction))
       {
         cmd.Parameters.AddWithValue("user_id", user.ID);
         cmd.Parameters.AddWithValue("room_id", room.ID);
@@ -135,7 +135,7 @@ namespace Xyz.Game.Database.Postgres
     public void ChangeGame(Room room, XyzGame game, GameConfig config)
     {
       string query = "INSERT INTO game(id, room_id, game_type, game_config) VALUES(@id, @room_id, @game_type, @game_config)";
-      using (var cmd = new NpgsqlCommand(query, _connection))
+      using (var cmd = new NpgsqlCommand(query, _connection, _transaction))
       {
         cmd.Parameters.AddWithValue("id", game.ID);
         cmd.Parameters.AddWithValue("room_id", room.ID);
@@ -150,7 +150,7 @@ namespace Xyz.Game.Database.Postgres
     public void Close(Room room)
     {
       string query = "UPDATE room SET deleted_at = CURRENT_TIMESTAMP WHERE id = @id AND deleted_at is null";
-      using (var cmd = new NpgsqlCommand(query, _connection))
+      using (var cmd = new NpgsqlCommand(query, _connection, _transaction))
       {
         cmd.Parameters.AddWithValue("id", room.ID);
         cmd.ExecuteNonQuery();
@@ -160,7 +160,7 @@ namespace Xyz.Game.Database.Postgres
     public void AddMove(Room room, Move move)
     {
       string query = "INSERT INTO game_move(id, game_id, move, state) VALUES(@id, @game_id, @move, @state)";
-      using (var cmd = new NpgsqlCommand(query, _connection))
+      using (var cmd = new NpgsqlCommand(query, _connection, _transaction))
       {
         cmd.Parameters.AddWithValue("id", Guid.NewGuid());
         cmd.Parameters.AddWithValue("game_id", room.Game.ID);

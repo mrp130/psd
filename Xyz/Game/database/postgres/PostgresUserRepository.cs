@@ -23,7 +23,7 @@ left join (
     select user_id, sum(exp) as exp from exp group by user_id
 ) e on id = e.user_id where id = @id";
 
-      using (var cmd = new NpgsqlCommand(query, _connection))
+      using (var cmd = new NpgsqlCommand(query, _connection, _transaction))
       {
         cmd.Parameters.AddWithValue("id", id);
         NpgsqlDataReader reader = cmd.ExecuteReader();
@@ -43,7 +43,7 @@ left join (
     public void Create(User user)
     {
       string query = "INSERT INTO \"user\" (id, name) VALUES(@id, @name)";
-      using (var cmd = new NpgsqlCommand(query, _connection))
+      using (var cmd = new NpgsqlCommand(query, _connection, _transaction))
       {
         cmd.Parameters.AddWithValue("id", user.ID);
         cmd.Parameters.AddWithValue("name", user.Name);
@@ -54,7 +54,7 @@ left join (
     public void AddExp(User user, int exp)
     {
       string query = "INSERT INTO exp (id, user_id, exp) VALUES(@id, @user_id, @exp)";
-      using (var cmd = new NpgsqlCommand(query, _connection))
+      using (var cmd = new NpgsqlCommand(query, _connection, _transaction))
       {
         cmd.Parameters.AddWithValue("id", Guid.NewGuid());
         cmd.Parameters.AddWithValue("user_id", user.ID);

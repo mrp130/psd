@@ -179,7 +179,7 @@ Seperti statemen yang sudah dibahas sebelumnya, repository harus dibuat seekplis
 
 Lazy loading sebenarnya bagus untuk dilakukan. Ketika kita punya data yang banyak, misalnya satu juta data, tidak mungkin kita langsung load semuanya dari database (eager loading). Pasti developer butuh lazy loading untuk melakukan pagination.
 
-Masalahnya, di dalam aggregate, berbahaya dilakukan lazy loading karena bisa merusak pengecekan invariant. Disarankan membuat interface dengan filter yang lebih eksplisit dan menggunakan teknik *colleciton summaries* pada repository untuk menekan performa.
+Masalahnya, di dalam aggregate, berbahaya dilakukan lazy loading karena bisa merusak pengecekan invariant. Disarankan membuat interface dengan filter yang lebih eksplisit dan menggunakan teknik *collection summaries* pada repository untuk menekan performa.
 
 Pagination menggunakan lazy loading pastinya merupakan fitur yang sering dibutuhkan terutama dari sisi frontend. Untuk mengakalinya, Anda bisa menerapkan cara berikut [ini](https://medium.com/@stevesun21/pagination-in-domain-driven-design-c038c6858ac0).
 

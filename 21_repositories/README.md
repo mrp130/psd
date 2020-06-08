@@ -179,7 +179,7 @@ Seperti statemen yang sudah dibahas sebelumnya, repository harus dibuat seekplis
 
 Lazy loading sebenarnya bagus untuk dilakukan. Ketika kita punya data yang banyak, misalnya satu juta data, tidak mungkin kita langsung load semuanya dari database (eager loading). Pasti developer butuh lazy loading untuk melakukan pagination.
 
-Masalahnya, di dalam aggregate, berbahaya dilakukan lazy loading karena bisa merusak pengecekan invariant. Disarankan membuat interface dengan filter yang lebih eksplisit dan menggunakan teknik *collection summaries* pada repository untuk menekan performa.
+Masalahnya, di dalam aggregate, berbahaya dilakukan lazy loading karena bisa merusak pengecekan invariant. Disarankan membuat interface dengan filter yang lebih eksplisit dan menggunakan teknik *collection summaries* pada repository untuk meningkatkan performa.
 
 Pagination menggunakan lazy loading pastinya merupakan fitur yang sering dibutuhkan terutama dari sisi frontend. Untuk mengakalinya, Anda bisa menerapkan cara berikut [ini](https://medium.com/@stevesun21/pagination-in-domain-driven-design-c038c6858ac0).
 
@@ -230,4 +230,6 @@ dotnet add package System.Text.Json
 
 Code PT.XYZ yang sudah ditambahkan repository dapat dilihat di: https://github.com/mrp130/psd/tree/5-repository.
 
-Perhatikan semua `interface` dari repo dan unit of work dletakkan di `namespace` domain model. Sedangkan implementasinya, dibuatkan `namespace` terpisah bernama `postgres` [disini](https://github.com/mrp130/psd/tree/master/Xyz/Game/database/postgres).
+Perhatikan semua `interface` dari repo dan unit of work dletakkan di `namespace` domain model. Ada [IRoomRepository.cs](https://github.com/mrp130/psd/blob/master/Xyz/Game/RoomAggregate/IRoomRepository.cs) dan [IUserRepository.cs](https://github.com/mrp130/psd/blob/master/Xyz/Game/UserAggregate/IUserRepository.cs)
+
+Sedangkan implementasi postgres dari masing-masing interface repository, dibuatkan `namespace` terpisah bernama `postgres` [disini](https://github.com/mrp130/psd/tree/master/Xyz/Game/database/postgres).

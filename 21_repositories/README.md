@@ -156,6 +156,42 @@ Repository mengurus masalah pessimistic concurrency. Di dalam repository, bisa d
 
 Repository mengurus semua pencatatan metadata untuk keperluan audit. Misal, setiap ada perubahan, maka data lama dan baru dicatat dalam table history. Atau contoh lain yang lebih mudah: setiap ada perubahan data, maka kolom `updated_at` diganti menjadi timestamp sekarang.
 
+## Anti Pattern
+
+Berikut adalah kesalahan penerapan repository menurut Scott Millett.
+
+### Anti Pattern: Ad Hoc Queries
+
+Yang dimaksud dengan ad-hoc query adalah, sebuah code yang memungkinkan kita untuk menyelipkan raw query. Misalnya lewat passing parameter.
+
+```cs
+public interface ICustomerRepository
+{
+  void Add(Customer customer);
+  Customer FindBy(Guid Id);
+  IEnumerable<Customer> FindBy(CustomerQuery query);
+}
+```
+
+Seperti statemen yang sudah dibahas sebelumnya, repository harus dibuat seekplisit mungkin. Bila developer sampai membiarkan adanya ad-hoc query, berarti interface kurang eksplisit.
+
+### Anti Pattern: Lazy Loading
+
+Lazy loading sebenarnya bagus untuk dilakukan. Ketika kita punya data yang banyak, misalnya satu juta data. Tidak mungkin kita langsung load semuanya dari database (eager loading). Pasti developer butuh lazy loading untuk melakukan pagination.
+
+Masalahnya, di dalam aggregate, berbahaya dilakukan lazy loading karena bisa merusak pengecekan invariant. Disarankan membuat interface dengan filter yang lebih eksplisit dan menggunakan teknik *colleciton summaries* pada repository untuk menekan performa.
+
+Pagination menggunakan lazy loading pastinya merupakan fitur yang sering dibutuhkan terutama dari sisi frontend. Untuk mengakalinya, Anda bisa menerapkan cara berikut [ini](https://medium.com/@stevesun21/pagination-in-domain-driven-design-c038c6858ac0).
+
+
+### Anti Pattern: Reporting
+
+Jangan gunakan repository untuk keperluan reporting.
+
+Idealnya, layaknya aggreggate, repository dibuat berdasarkan kebutuhan domain. Repository tidak dibuat mengikuti UI maupun reporting.
+
+Reporting sebaiknya diambil menggunakan teknik lain. Misalnya menggunakan OLAP.
+
 ---
 
 ## Implementasi

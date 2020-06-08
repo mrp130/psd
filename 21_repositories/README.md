@@ -188,7 +188,7 @@ Pagination menggunakan lazy loading pastinya merupakan fitur yang sering dibutuh
 
 Jangan gunakan repository untuk keperluan reporting.
 
-Idealnya, layaknya aggreggate, repository dibuat berdasarkan kebutuhan domain. Repository tidak dibuat mengikuti UI maupun reporting.
+Idealnya, layaknya aggregate, repository dibuat berdasarkan kebutuhan domain. Repository tidak dibuat mengikuti UI maupun reporting.
 
 Reporting sebaiknya diambil menggunakan teknik lain. Misalnya menggunakan OLAP.
 

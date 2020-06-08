@@ -54,3 +54,15 @@ CREATE TABLE "game_move"
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (game_id) REFERENCES "game" (id)
 );
+
+CREATE TABLE "exp_snapshot" 
+( 
+    id                  UUID PRIMARY KEY, 
+    user_id             UUID NOT NULL, 
+    exp                 INT NOT NULL, 
+    last_exp_id         UUID NOT NULL, 
+    last_exp_created_at TIMESTAMPTZ NOT NULL, 
+    created_at          TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP, 
+    FOREIGN KEY (user_id) REFERENCES "user" (id), 
+    FOREIGN KEY (last_exp_id) REFERENCES "exp" (id) 
+); 

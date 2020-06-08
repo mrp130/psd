@@ -101,7 +101,7 @@ Getter dan Setter dibuat public. Mengorbankan enkapsulasi demi repository bisa m
 
 Bila enkapsulasi domain object tetap mau dijaga. Cara lain yang agak merepotkan adalah membuat class Memento-nya. Dengan menggunakan Memento, class utama akan membantu men-generate object Memento dengan data-datanya. public setter dan getter akan diletakkan di Memento, tidak di dalam class utama. Persistence dan hydrate pun dilakukan menggunakan class Memento ini.
 
-Contoh implementasi Memento dapat dilihat pada [TicTacToeMemento](https://github.com/mrp130/psd/blob/master/Xyz/Game/RoomAggregate/TicTacToe.cs#L5) di code project XYZ. Memento tersebut bisa di-[generate](https://github.com/mrp130/psd/blob/master/Xyz/Game/RoomAggregate/TicTacToe.cs#L194) dan bisa di-[load](https://github.com/mrp130/psd/blob/master/Xyz/Game/RoomAggregate/TicTacToe.cs#L199) ke dalam object game TicTacToe.
+Contoh implementasi Memento dapat dilihat pada [TicTacToeMemento](https://github.com/mrp130/psd/blob/5-repository/Xyz/Game/RoomAggregate/TicTacToe.cs#L5) di code project XYZ. Memento tersebut bisa di-[generate](https://github.com/mrp130/psd/blob/5-repository/Xyz/Game/RoomAggregate/TicTacToe.cs#L194) dan bisa di-[load](https://github.com/mrp130/psd/blob/5-repository/Xyz/Game/RoomAggregate/TicTacToe.cs#L199) ke dalam object game TicTacToe.
 
 ```cs
 public override object GetMemento()
@@ -134,7 +134,7 @@ Ketika melakukan persistensi, idealnya kita perlu mengurus transaction pada data
 
 Misal, suatu application layer menjalankan method `A` yang menjalankan query untuk mengurangkan uang dari saldo user. Kemudian dilanjutkan method `B` yang menjalankan query untuk mengurangkan stok barang di dalam gudang. Ternyata karena suatu hal, method `B` ini error. Tentunya kita perlu melakukan rollback agar query dari method `A` tidak benar-benar terjadi. Sehingga saldo user tidak jadi berkurang.
 
-Untuk melakukan proses commit/rollback dengan lebih rapi, biasanya developer menerapkan pattern Unit of Work yang telah dideskripsikan Martin Fowler ([baca disini](https://martinfowler.com/eaaCatalog/unitOfWork.html)). Contoh pada code project PT. XYZ dapat dilihat [disini](https://github.com/mrp130/psd/blob/master/Xyz/Game/database/postgres/PostgresUnitOfWork.cs). Penerapannya dapat dilihat di unit test [UnitOfWorkTest.cs](https://github.com/mrp130/psd/blob/master/Xyz/GameTest/UnitOfWorkTest.cs).
+Untuk melakukan proses commit/rollback dengan lebih rapi, biasanya developer menerapkan pattern Unit of Work yang telah dideskripsikan Martin Fowler ([baca disini](https://martinfowler.com/eaaCatalog/unitOfWork.html)). Contoh pada code project PT. XYZ dapat dilihat [disini](https://github.com/mrp130/psd/blob/5-repository/Xyz/Game/database/postgres/PostgresUnitOfWork.cs). Penerapannya dapat dilihat di unit test [UnitOfWorkTest.cs](https://github.com/mrp130/psd/blob/5-repository/Xyz/GameTest/UnitOfWorkTest.cs).
 
 Bila Anda menggunakan .NET Entity Framework, sudah disediakan class **DbContext** yang mengurus masalah transaksi ini.
 
@@ -230,8 +230,8 @@ dotnet add package System.Text.Json
 
 Code PT.XYZ yang sudah ditambahkan repository dapat dilihat di: https://github.com/mrp130/psd/tree/5-repository.
 
-Perhatikan semua `interface` dari repo dan unit of work dletakkan di `namespace` domain model. Ada [IRoomRepository.cs](https://github.com/mrp130/psd/blob/master/Xyz/Game/RoomAggregate/IRoomRepository.cs) dan [IUserRepository.cs](https://github.com/mrp130/psd/blob/master/Xyz/Game/UserAggregate/IUserRepository.cs).
+Perhatikan semua `interface` dari repo dan unit of work dletakkan di `namespace` domain model. Ada [IRoomRepository.cs](https://github.com/mrp130/psd/blob/5-repository/Xyz/Game/RoomAggregate/IRoomRepository.cs) dan [IUserRepository.cs](https://github.com/mrp130/psd/blob/5-repository/Xyz/Game/UserAggregate/IUserRepository.cs).
 
 Sedangkan implementasi postgres dari masing-masing interface repository, dibuatkan `namespace` terpisah bernama `postgres` [disini](https://github.com/mrp130/psd/tree/master/Xyz/Game/database/postgres).
 
-Struktur table dapat dilihat di [create_table.sql](https://github.com/mrp130/psd/blob/master/Xyz/Game/database/postgres/create_table.sql).
+Struktur table dapat dilihat di [create_table.sql](https://github.com/mrp130/psd/blob/5-repository/Xyz/Game/database/postgres/create_table.sql).

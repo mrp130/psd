@@ -190,7 +190,7 @@ Jangan gunakan repository untuk keperluan reporting.
 
 Idealnya, layaknya aggregate, repository dibuat berdasarkan kebutuhan domain. Repository tidak dibuat mengikuti UI maupun reporting.
 
-Reporting sebaiknya diambil menggunakan teknik lain. Misalnya menggunakan OLAP.
+Reporting sebaiknya diambil menggunakan teknik lain. Misalnya menggunakan [OLAP](https://en.wikipedia.org/wiki/Online_analytical_processing).
 
 ---
 

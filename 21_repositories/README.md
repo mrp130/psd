@@ -230,6 +230,8 @@ dotnet add package System.Text.Json
 
 Code PT.XYZ yang sudah ditambahkan repository dapat dilihat di: https://github.com/mrp130/psd/tree/5-repository.
 
-Perhatikan semua `interface` dari repo dan unit of work dletakkan di `namespace` domain model. Ada [IRoomRepository.cs](https://github.com/mrp130/psd/blob/master/Xyz/Game/RoomAggregate/IRoomRepository.cs) dan [IUserRepository.cs](https://github.com/mrp130/psd/blob/master/Xyz/Game/UserAggregate/IUserRepository.cs)
+Perhatikan semua `interface` dari repo dan unit of work dletakkan di `namespace` domain model. Ada [IRoomRepository.cs](https://github.com/mrp130/psd/blob/master/Xyz/Game/RoomAggregate/IRoomRepository.cs) dan [IUserRepository.cs](https://github.com/mrp130/psd/blob/master/Xyz/Game/UserAggregate/IUserRepository.cs).
 
 Sedangkan implementasi postgres dari masing-masing interface repository, dibuatkan `namespace` terpisah bernama `postgres` [disini](https://github.com/mrp130/psd/tree/master/Xyz/Game/database/postgres).
+
+Struktur table dapat dilihat di [create_table.sql](https://github.com/mrp130/psd/blob/master/Xyz/Game/database/postgres/create_table.sql).

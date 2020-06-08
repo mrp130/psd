@@ -59,5 +59,46 @@ namespace Xyz.Game.Test
 
       _connection.Close();
     }
+
+    [Fact]
+    public void ExpSnapshotText()
+    {
+      NpgsqlConnection _connection = new NpgsqlConnection(connString);
+      _connection.Open();
+
+      IUserRepository repo = new PostgresUserRepository(_connection, null);
+
+      User u = User.NewUser("Charlie");
+      repo.Create(u);
+
+      for (int i = 0; i < 150; i++)
+      {
+        repo.AddExp(u, 2);
+      }
+
+      User u2 = repo.FindById(u.ID);
+      Assert.NotNull(u2);
+
+      Assert.Equal(300, u2.Exp);
+
+      int expFromSnapshot = 0;
+      string query = "SELECT exp FROM exp_snapshot WHERE user_id = @user_id ORDER BY created_at DESC LIMIT 1";
+      using (var cmd = new NpgsqlCommand(query, _connection))
+      {
+        cmd.Parameters.AddWithValue("user_id", u.ID);
+
+        using (NpgsqlDataReader reader = cmd.ExecuteReader())
+        {
+          if (reader.Read())
+          {
+            expFromSnapshot = reader.GetInt32(0);
+          }
+        }
+      }
+
+      Assert.Equal(200, expFromSnapshot);
+
+      _connection.Close();
+    }
   }
 }

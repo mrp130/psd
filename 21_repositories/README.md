@@ -181,7 +181,7 @@ Lazy loading sebenarnya bagus untuk dilakukan. Ketika kita punya data yang banya
 
 Masalahnya, di dalam aggregate, berbahaya dilakukan lazy loading karena bisa merusak pengecekan invariant. Disarankan membuat interface dengan filter yang lebih eksplisit dan menggunakan teknik *collection summaries* pada repository untuk meningkatkan performa.
 
-Pagination menggunakan lazy loading pastinya merupakan fitur yang sering dibutuhkan terutama dari sisi frontend. Untuk mengakalinya, Anda bisa menerapkan cara berikut [ini](https://medium.com/@stevesun21/pagination-in-domain-driven-design-c038c6858ac0).
+Pagination menggunakan lazy loading pastinya merupakan fitur yang sering dibutuhkan terutama dari sisi frontend. Untuk mengakalinya, Anda bisa menerapkan cara berikut [ini](https://medium.com/@stevesun21/pagination-in-domain-driven-design-c038c6858ac0). Dengan teknik ini, kebutuhan pagination diurus di layer UI, application, dan infrastruktur. Layer domain sama sekali tidak terganggu.
 
 
 ### Anti Pattern: Reporting

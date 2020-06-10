@@ -147,21 +147,7 @@ namespace Xyz.Game.Database.Postgres
         }
       }
 
-      int sumExp = 0;
-      query = "SELECT SUM(exp) FROM exp WHERE user_id = @user_id AND created_at <= @last_exp_created_at";
-      using (var cmd = new NpgsqlCommand(query, _connection, _transaction))
-      {
-        cmd.Parameters.AddWithValue("user_id", id);
-        cmd.Parameters.AddWithValue("last_exp_created_at", lastExpCreatedAt);
-
-        using (NpgsqlDataReader reader = cmd.ExecuteReader())
-        {
-          if (reader.Read())
-          {
-            sumExp = reader.GetInt32(0);
-          }
-        }
-      }
+      int sumExp = getExp(id);
 
       query = "INSERT INTO exp_snapshot (id, user_id, exp, last_exp_id, last_exp_created_at) VALUES(@id, @user_id, @exp, @last_exp_id, @last_exp_created_at)";
       using (var cmd = new NpgsqlCommand(query, _connection, _transaction))

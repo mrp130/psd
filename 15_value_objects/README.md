@@ -232,7 +232,7 @@ Self-validating dapat dilakukan di constructor ketika object pertamakali berusah
 
 Value object relatif mudah dibuat unit test-nya. Sebagai software engineer yang bertanggung jawab, Anda harus memaksimalkan test coverage di dalam codebase Anda.
 
-Mungkin selama ini Anda biasanya melakukan pengetesan sistem dengan cara compile > run, kemudian Anda masukkan manual input dan melihat manual output yang diharapkan. Tentunya hal ini redundan, sangat memakan waktu, dan juga berbahaya karena faktor human-error besar.
+Mungkin selama diajarkan di semester 1 dan 2, Anda biasanya diajarkan melakukan pengetesan sistem secara manual lewat console. Kemudian Anda masukkan manual input dan melihat manual output yang diharapkan. Tentunya hal ini redundan, sangat memakan waktu, dan juga berbahaya karena faktor human-error besar.
 
 Dengan menggunakan unit test, Anda membuat code untuk mengetes setiap line of code hal yang ingin Anda tes. Misal Anda membuat obyek menggunakan `new`. Kemudian dari code, Anda coba menjalankan sebuah method, kemudian Anda mengecek apakah output sudah sesuai dengan harapan. Dan begitu seterusnya. 
 
